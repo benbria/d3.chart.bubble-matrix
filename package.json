@@ -1,0 +1,35 @@
+{
+  "name": "d3.chart.bubble-matrix",
+  "description": "A bubble-matrix chart.",
+  "version": "0.1.0",
+  "author": "Jean Lauliac",
+  "license": {
+    "type": "MIT Expat",
+    "url": "https://raw.github.com/undashes/d3.chart.bubble-matrix/master/LICENSE"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/undashes/d3.chart.bubble-matrix.git"
+  },
+  "keywords": [
+    "d3.js",
+    "visualization",
+    "svg",
+    "bubble",
+    "bubbles",
+    "matrix"
+  ],
+  "d3.chart": {
+    "version" : "0.1.3"
+  },
+  "devDependencies": {
+    "LiveScript": "1.2.0",
+    "grunt": "~0.4.0",
+    "grunt-contrib-concat": "~0.1.3",
+    "grunt-contrib-uglify": "~0.1.1",
+    "grunt-contrib-jshint": "~0.1.1",
+    "grunt-contrib-watch" : "~0.3.1",
+    "grunt-contrib-stylus": "~0.8.0",
+    "grunt-livescript": "0.5.1"
+  }
+}
