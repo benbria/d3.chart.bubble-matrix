@@ -14,8 +14,8 @@ module.exports = function(grunt) {
     },
     watch: {
       scripts: {
-        files: ["src/**/*.js"],
-        tasks: ["jshint"]
+        files: ["src/**/*.{js,ls}"],
+        tasks: ["livescript", "concat"]
       },
       styles: {
         files: ["src/styles/**/*.styl"],
@@ -85,5 +85,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-stylus");
   grunt.loadNpmTasks('grunt-livescript');
 
-  grunt.registerTask("default", ["jshint", "livescript", "concat", "uglify", "stylus"]);
+  grunt.registerTask("dist", ["jshint", "livescript", "concat", "uglify", "stylus"]);
+  grunt.registerTask("default", "dist");
 };

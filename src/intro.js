@@ -12,4 +12,4 @@
     this.bubbleMatrix = mod(this.d3, this.d3.chart);
 })(function(d3, d3Chart) {
   "use strict";
-  exports = {};
+  var exports = {};
