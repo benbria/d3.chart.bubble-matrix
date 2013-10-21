@@ -7,7 +7,8 @@ makeProp = exports.makeProp
 #
 const HZ_PADDING = 1.0
 const VT_PADDING = 1.0
-const HZ_HEADER_MARGIN = 0.15
+const HZ_ROW_HEADER_MARGIN = 0.15
+const HZ_COL_HEADER_MARGIN = 0.1
 
 # Declare the chart.
 #
@@ -21,9 +22,11 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
         thread-gr = @base.append \g .classed \thread, true
         bubble-gr = @base.append \g .classed \bubble, true
         row-header-gr = @base.append \g .classed \row-header, true
+        col-header-gr = @base.append \g .classed \col-header, true
         @layer \bubble, bubble-gr, exports.bubble-options
         @layer \thread, thread-gr, exports.thread-options
         @layer \row-header, row-header-gr, exports.row-header-options
+        @layer \col-header, col-header-gr, exports.col-header-options
         @on \change:width, -> @setup-scales_!
         @on \change:height, -> @setup-scales_!
 
@@ -51,7 +54,10 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
 
     setup-scales_: ->
         width = @width!
-        left = HZ_HEADER_MARGIN * width
+        height = @height!
+        left = HZ_ROW_HEADER_MARGIN * width
+        bottom = (1-HZ_COL_HEADER_MARGIN) * height
         @left-margin_ = left
+        @bottom-margin_ = bottom
         @x-scale_.rangePoints [left, width], HZ_PADDING
-        @y-scale_.rangePoints [0, @height!], VT_PADDING
+        @y-scale_.rangePoints [0, bottom], VT_PADDING

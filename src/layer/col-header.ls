@@ -6,7 +6,7 @@ o = {events: {}}
 #
 o.data-bind = (data) ->
     chart = @chart!
-    @select-all \text .data data
+    @select-all \text .data chart.x-scale_.domain!
 
 # Insert groups for header.
 #
@@ -16,9 +16,9 @@ o.insert = ->
 
 o.events[\merge] = ->
     chart = @chart!
-    left = chart.left-margin_ - chart.radius-scale_ 2
-    @text -> chart.row-header_ ...
+    bottom = chart.bottom-margin_ + chart.radius-scale_ 2
+    @text (d) -> chart.col-header_ ...
     @attr \transform, (d, i) ->
-        "translate(#left,#{chart.y-scale_ i})"
+        "translate(#{chart.x-scale_ i},#bottom)"
 
-exports.row-header-options = o
+exports.col-header-options = o
