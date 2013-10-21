@@ -14,9 +14,11 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
     initialize: ->
         @x-scale_ = d3.scale.ordinal!
         @y-scale_ = d3.scale.ordinal!
-        @radius-scale_ = d3.scale.linear!
+        @radius-scale_ = d3.scale.sqrt!
+        thread-gr = @base.append \g .classed \thread, true
         bubbles-gr = @base.append \g .classed \bubbles, true
         @layer \bubbles, bubbles-gr, exports.bubbles-options
+        @layer \thread, thread-gr, exports.thread-options
         @on \change:width, -> @setup-scales_!
         @on \change:height, -> @setup-scales_!
 

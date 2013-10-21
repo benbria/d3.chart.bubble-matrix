@@ -8,6 +8,7 @@ module.exports = function(grunt) {
                 "src/meta/intro.js",
                 ".build/util.js",
                 ".build/bubbles-layer.js",
+                ".build/thread-layer.js",
                 ".build/bubble-matrix.js",
                 "src/meta/outro.js"
             ],

@@ -26,12 +26,17 @@
         .color(function (d) { return d.positivity; })
         .colorScale(d3.scale.quantize()
             .domain([0,1])
-            .range(colorbrewer.RdYlGn[9]));
+            .range(colorbrewer.Spectral[9]));
 
+    var jx = 0;
     function genRndRow(key) {
         row = [];
-        for (var i = 0; i < 24; ++i)
-            row.push({volume: Math.random(), positivity: Math.random()});
+        for (var i = 0; i < 24; ++i) {
+            v = Math.random()*3/4+0.25;
+            //v = ((i+jx)%24)/24;
+            row.push({volume: v, positivity: Math.random()});
+        }
+        ++jx;
         return {key: key, data: row};
     }
 
