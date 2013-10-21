@@ -28,4 +28,7 @@ o.events[\merge] = ->
     path += "M #{left} 0 H #{range[range.length-1]}"
     @select \path .attr \d, path
 
+o.events[\exit] = ->
+    @remove()
+
 exports.thread-options = o

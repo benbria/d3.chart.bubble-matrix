@@ -61,3 +61,6 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
         @bottom-margin_ = bottom
         @x-scale_.rangePoints [left, width], HZ_PADDING
         @y-scale_.rangePoints [0, bottom], VT_PADDING
+        # FIXME: the radius is not correct when data haven't been loaded yet.
+        #        The margin should not depend on data availability.
+        @trigger 'margin', @left-margin_ - @radius-scale_ 1

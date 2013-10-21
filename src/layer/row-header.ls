@@ -21,4 +21,7 @@ o.events[\merge] = ->
     @attr \transform, (d, i) ->
         "translate(#left,#{chart.y-scale_ i})"
 
+o.events[\exit] = ->
+    @remove()
+
 exports.row-header-options = o

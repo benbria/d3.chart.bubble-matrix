@@ -35,6 +35,9 @@ bubble-merge = (sel, chart) ->
     @attr \cx, (d, i) -> chart.x-scale_ i
     @attr \stroke-width, STROKE_WIDTH * chart.radius-scale_ 1
 
+bubble-exit = (sel, chart) ->
+    @remove()
+
 # Handle the merge transition for a bubble.
 #
 bubble-merge-transition = (sel, chart) ->
@@ -55,7 +58,11 @@ o.events[\merge] = ->
     @attr \transform, (d, i) -> "translate(0,#{chart.y-scale_ i})"
     bubbles = @select-all \circle .data (d) -> chart.row-data_ d
     bubbles.enter!append \circle .call bubble-enter, chart
+    bubbles.exit!call bubble-exit, chart
     bubbles.call bubble-merge, chart
+
+o.events[\exit] = ->
+    @remove()
 
 o.events[\merge:transition] = ->
     chart = @chart!

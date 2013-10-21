@@ -1,5 +1,8 @@
 (function() {
     var data = null;
+    var options = {hourCount: 24};
+
+    options.weekDays = document.getElementById('week-days').value.split(',');
 
     var DayNames = {
         MON: 'Monday',
@@ -38,12 +41,15 @@
         .color(function (d) { return d.positivity; })
         .colorScale(nullableScale('#ddd', d3.scale.quantize()
             .domain([0,1])
-            .range(colorbrewer.RdYlBu[9])));
+            .range(colorbrewer.RdYlBu[9])))
+        .on('margin', function(value) {
+                this.base.style('margin-left', '-' + value + 'px');
+            });
 
     var jx = 0;
     function genRndRow(key) {
         row = [];
-        for (var i = 0; i < 24; ++i) {
+        for (var i = 0; i < options.hourCount; ++i) {
             var v = Math.random()*0.2 + HOUR_VOLUMES[i];
             var p = Math.random();
 
@@ -60,16 +66,16 @@
     }
 
     function genData() {
-        var data = [
-            genRndRow('MON'),
-            genRndRow('TUE'),
-            genRndRow('WED'),
-            genRndRow('THU'),
-            genRndRow('FRI'),
-            genRndRow('SAT'),
-            genRndRow('SUN')
-        ];
+        var data = [];
+        for (var i = 0; i < options.weekDays.length; ++i) {
+            data.push(genRndRow(options.weekDays[i]));
+        }
         return data;
+    }
+
+    function rebuild() {
+        data = genData();
+        chart.draw(data);
     }
 
     function onResize() {
@@ -79,13 +85,20 @@
         chart.draw(data);
     }
 
-    function onClick() {
-        data = genData();
-        chart.draw(data);
-    }
+    window.addEventListener('resize', onResize);
+    document.getElementById('refresh').addEventListener("click", rebuild);
 
-    window.addEventListener("resize", onResize);
-    document.getElementById('refresh').addEventListener("click", onClick);
+    document.getElementById('hour-count')
+        .addEventListener("change", function() {
+            options.hourCount = document.getElementById('hour-count').value;
+            rebuild();
+    });
+
+    document.getElementById('week-days')
+        .addEventListener("change", function() {
+            options.weekDays = document.getElementById('week-days').value.split(',');
+            rebuild();
+    });
 
     data = genData();
     onResize();
