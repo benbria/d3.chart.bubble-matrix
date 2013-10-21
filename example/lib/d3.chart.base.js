@@ -105,25 +105,25 @@
     var chart = this;
 
     for(var layerName in chart._layersArguments) {
-      
+
       // is this chart in the current mode?
       var layerArgs = chart._layersArguments[layerName];
-      
+
       // if this layer should not exist in the current mode
-      // unlayer it and then save it so we can reattach it 
+      // unlayer it and then save it so we can reattach it
       // later.
       if (layerArgs.options.modes.indexOf(chart.mode()) === -1) {
 
         // is it showing?
         if (layerArgs.showing === true) {
-          
+
           // nope? remove it.
           var removedLayer = chart.unlayer(layerName);
           removedLayer.style("display","none");
           chart._layersArguments[layerName].showing = false;
           chart._layersArguments[layerName].layer = removedLayer;
         }
-      
+
       } else {
 
         // this layer is not showing, we need to add it
@@ -155,7 +155,7 @@
 
       var chart = this;
       // layer structures container - for layers that are
-      // created on initialize but do not actually need to 
+      // created on initialize but do not actually need to
       // be rendered in the detected mode, we need to save the
       // actual arguments so that we can construct it later.
       this._layersArguments = {};
@@ -195,7 +195,7 @@
             noDraw: true
           });
         }
-        
+
         // update current mode
         var changed = _determineMode.call(chart);
         if (changed) {
@@ -225,7 +225,7 @@
 
         // sort out current mode
         _onModeChange.call(chart);
-       
+
       });
     },
 
@@ -312,7 +312,7 @@
       return this;
     }
   });
-  
+
   var oldLayer = BaseChart.prototype.layer;
   BaseChart.prototype.layer = function(name, selection, options) {
 
@@ -362,10 +362,10 @@
       // cache the layer under the mode name. This will be useful
       // when we are repainting layers.
       options.modes.forEach(function(mode) {
-        
+
         // make sure mode exists
         if (mode in chart._modes) {
-          
+
            chart._modeLayers[mode] = chart._modeLayers[mode] || [];
 
            // save the layer as being mapped to this mode.
@@ -377,11 +377,11 @@
       });
 
     // make sure this layer has all modes if none were
-    // specified as an option.  
+    // specified as an option.
     } else if (chart._modes) {
-      
+
       var allModes = Object.keys(chart._modes);
-      
+
       if (layer) {
         layer._modes = allModes;
       }

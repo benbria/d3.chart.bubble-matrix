@@ -6,7 +6,9 @@ module.exports = function(grunt) {
             pkg: grunt.file.readJSON("package.json"),
             srcFiles: [
                 "src/meta/intro.js",
-                ".build/*.js",
+                ".build/util.js",
+                ".build/bubbles-layer.js",
+                ".build/bubble-matrix.js",
                 "src/meta/outro.js"
             ],
             chartName: 'bubble-matrix'
@@ -89,6 +91,10 @@ module.exports = function(grunt) {
 
     grunt.registerTask("dist", [
         "jshint", "livescript", "concat", "uglify", "stylus"
+    ]);
+
+    grunt.registerTask("devel", [
+        "livescript", "concat", "watch"
     ]);
 
     grunt.registerTask("default", "dist");
