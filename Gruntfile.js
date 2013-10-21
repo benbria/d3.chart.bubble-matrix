@@ -7,8 +7,8 @@ module.exports = function(grunt) {
             srcFiles: [
                 "src/meta/intro.js",
                 ".build/util.js",
-                ".build/bubbles-layer.js",
-                ".build/thread-layer.js",
+                ".build/layer/bubbles.js",
+                ".build/layer/thread.js",
                 ".build/bubble-matrix.js",
                 "src/meta/outro.js"
             ],
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: 'src',
-                    src: '*.ls',
+                    src: '**/*.ls',
                     dest: '.build',
                     ext: '.js'
                 }]
