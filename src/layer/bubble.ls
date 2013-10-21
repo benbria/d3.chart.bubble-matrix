@@ -3,6 +3,7 @@
 o = {events: {}}
 
 const RADIUS_PADDING = 0.1
+const STROKE_WIDTH = 0.15
 
 # Bind data to the bubble rows.
 #
@@ -32,15 +33,18 @@ bubble-enter = (sel, chart) ->
 #
 bubble-merge = (sel, chart) ->
     @attr \cx, (d, i) -> chart.x-scale_ i
+    @attr \stroke-width, STROKE_WIDTH * chart.radius-scale_ 1
 
 # Handle the merge transition for a bubble.
 #
 bubble-merge-transition = (sel, chart) ->
-    @duration 500
+    @delay (d, i, j) -> i*10+j*10
+    @duration 300
     @attr \r, (d) -> chart.radius-scale_ (chart.radius_ d)
     @each (d) ->
         color = chart.color-scale_ (chart.color_ d)
-        d3.select(this).transition().attr \fill, color
+        d3.select(this).transition()
+            .attr \fill, color
         # FIXME: make it configurable, or remove it definitely.
         #@setAttribute \stroke, d3.lab(color).darker(0.2).toString()
 
@@ -57,4 +61,4 @@ o.events[\merge:transition] = ->
     chart = @chart!
     @select-all \circle .call bubble-merge-transition, chart
 
-exports.bubbles-options = o
+exports.bubble-options = o

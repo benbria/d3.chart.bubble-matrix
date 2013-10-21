@@ -7,8 +7,7 @@ module.exports = function(grunt) {
             srcFiles: [
                 "src/meta/intro.js",
                 ".build/util.js",
-                ".build/layer/bubbles.js",
-                ".build/layer/thread.js",
+                ".build/layer/*.js",
                 ".build/bubble-matrix.js",
                 "src/meta/outro.js"
             ],
@@ -19,9 +18,13 @@ module.exports = function(grunt) {
                 files: ["src/**/*.{js,ls}"],
                 tasks: ["livescript", "concat"]
             },
-            styles: {
-                files: ["src/styles/**/*.styl"],
-                tasks: ["stylus"]
+            style: {
+                files: ["src/style/**/*.styl"],
+                tasks: ["stylus:style"]
+            },
+            theme: {
+                files: ["src/theme/**/*.styl"],
+                tasks: ["stylus:theme"]
             }
         },
         jshint: {
@@ -74,10 +77,16 @@ module.exports = function(grunt) {
             }
         },
         stylus: {
-            dist: {
+            style: {
                 files: {
                     "dist/d3.chart.<%= meta.chartName %>.css" :
-                        ["src/styles/**/*.styl"]
+                        ["src/style/**/*.styl"]
+                }
+            },
+            theme: {
+                files: {
+                    "dist/d3.chart.<%= meta.chartName %>.default.css" :
+                        ["src/theme/**/*.styl"]
                 }
             }
         }
@@ -95,7 +104,7 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask("devel", [
-        "livescript", "concat", "watch"
+        "livescript", "concat", "stylus", "watch"
     ]);
 
     grunt.registerTask("default", "dist");

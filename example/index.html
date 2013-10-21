@@ -2,18 +2,24 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>D3.chart Boilerplate Example</title>
+		<title>D3.chart Bubble Matrix</title>
 		<script src="../bower_components/d3/d3.js"></script>
         <script src="lib/d3.chart.js"></script>
         <script src="lib/d3.chart.base.js"></script>
         <script src="lib/colorbrewer.js"></script>
         <script src="../dist/d3.chart.bubble-matrix.js"></script>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="../dist/d3.chart.bubble-matrix.css">
+        <link rel="stylesheet" type="text/css" href="../dist/d3.chart.bubble-matrix.default.css">
         <style>
-            #vis { overflow: hidden; }
+            #vis { margin: 2rem 0; }
+            body { font: 100% "Open Sans", sans-serif; color: #333; }
         </style>
 	</head>
 	<body>
+        <h1>Bubble Matrix d3.chart</h1>
+        <p>This demonstrate the capabilities of the Bubble Matrix d3.chart.<br>
+            You can try to <a id='refresh' href='#'>refresh the graph.</a></p>
 		<div id="vis"></div>
 		<script src="example.js"></script>
 	</body>
