@@ -5,15 +5,11 @@
   "author": "Benbria",
   "license": {
     "type": "MIT Expat",
-    "url": "https://raw.github.com/undashes/d3.chart.bubble-matrix/master/LICENSE"
+    "url": "https://raw.github.com/benbria/d3.chart.bubble-matrix/master/LICENSE"
   },
-  "contributors": [
-    "Jean Lauliac <jean@lauliac.com>",
-    "Geoffry Song"
-  ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/undashes/d3.chart.bubble-matrix.git"
+    "url": "git://github.com/benbria/d3.chart.bubble-matrix.git"
   },
   "keywords": [
     "d3.js",
