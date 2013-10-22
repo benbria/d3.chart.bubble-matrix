@@ -7,8 +7,9 @@ makeProp = exports.makeProp
 #
 const HZ_PADDING = 1.0
 const VT_PADDING = 1.0
-const HZ_ROW_HEADER_MARGIN = 0.15
-const HZ_COL_HEADER_MARGIN = 0.1
+const ROW_HEADER_MARGIN = 0.15
+const COL_HEADER_MARGIN = 0.1
+const ROW_HEADER_PADDING = 0.01
 
 # Declare the chart.
 #
@@ -55,12 +56,10 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
     setup-scales_: ->
         width = @width!
         height = @height!
-        left = HZ_ROW_HEADER_MARGIN * width
-        bottom = (1-HZ_COL_HEADER_MARGIN) * height
-        @left-margin_ = left
+        left = ROW_HEADER_MARGIN * width
+        bottom = (1-COL_HEADER_MARGIN) * height
+        @left-margin_ = left - ROW_HEADER_PADDING * width
         @bottom-margin_ = bottom
         @x-scale_.rangePoints [left, width], HZ_PADDING
         @y-scale_.rangePoints [0, bottom], VT_PADDING
-        # FIXME: the radius is not correct when data haven't been loaded yet.
-        #        The margin should not depend on data availability.
-        @trigger 'margin', @left-margin_ - @radius-scale_ 1
+        @trigger 'margin', @left-margin_

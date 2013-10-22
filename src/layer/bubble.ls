@@ -2,10 +2,14 @@
 #
 o = {events: {}}
 
+# Relative padding between the bubbles.
 const RADIUS_PADDING = 0.1
+# White-space amount around bubbles as a coef. of the maximum radius.
 const STROKE_WIDTH = 0.15
 
-# Bind data to the bubble rows.
+# Bind data to the bubble rows. It also update the X and Y scale domains
+# according with the data length, and update the radius scale depending
+# on the available space.
 #
 o.data-bind = (data) ->
     chart = @chart!
@@ -23,26 +27,30 @@ o.insert = ->
     chart = @chart!
     @append \g .classed \row, true
 
-# Handle the enter event for a bubble.
+# Make a bubble enter the chart. It starts at radius 0 and animate smoothly
+# to the final radius.
 #
 bubble-enter = (sel, chart) ->
     @attr \r, 0
     @attr \fill, 'white'
 
-# Handle the merge (enter + existing) event for a bubble.
+# Make sure both entering and existing bubbles are at the correct location
+# and have the correct white spacing around.
 #
 bubble-merge = (sel, chart) ->
     @attr \cx, (d, i) -> chart.x-scale_ i
     @attr \stroke-width, STROKE_WIDTH * chart.radius-scale_ 1
 
+# Remove bubbles.
+#
 bubble-exit = (sel, chart) ->
     @remove()
 
-# Handle the merge transition for a bubble.
+# Transition the bubbles to their final radius and color, according with data.
 #
 bubble-merge-transition = (sel, chart) ->
-    @delay (d, i, j) -> i*10+j*10
-    @duration 300
+    @delay (d, i, j) -> i*5+j*20
+    @duration 200
     @attr \r, (d) -> chart.radius-scale_ (chart.radius_ d)
     @each (d) ->
         color = chart.color-scale_ (chart.color_ d)
@@ -51,7 +59,8 @@ bubble-merge-transition = (sel, chart) ->
         # FIXME: make it configurable, or remove it definitely.
         #@setAttribute \stroke, d3.lab(color).darker(0.2).toString()
 
-# Handle the merge event for a bubble row.
+# Ensure entering and exisiting rows are at the correct location, then
+# add/remove bubbles as necessary for each row.
 #
 o.events[\merge] = ->
     chart = @chart!
@@ -61,11 +70,15 @@ o.events[\merge] = ->
     bubbles.exit!call bubble-exit, chart
     bubbles.call bubble-merge, chart
 
-o.events[\exit] = ->
-    @remove()
-
+# Transition each bubble in rows.
+#
 o.events[\merge:transition] = ->
     chart = @chart!
     @select-all \circle .call bubble-merge-transition, chart
+
+# Remove exiting rows.
+#
+o.events[\exit] = ->
+    @remove()
 
 exports.bubble-options = o
