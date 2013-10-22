@@ -1,5 +1,6 @@
 (function() {
     var data = null;
+    var filteredData = null;
     var options = {hourCount: 24};
 
     options.weekDays = document.getElementById('week-days').value.split(',');
@@ -49,7 +50,7 @@
     var jx = 0;
     function genRndRow(key) {
         row = [];
-        for (var i = 0; i < options.hourCount; ++i) {
+        for (var i = 0; i < 24; ++i) {
             var v = Math.random()*0.2 + HOUR_VOLUMES[i];
             var p = Math.random();
 
@@ -73,16 +74,39 @@
         return data;
     }
 
+    function filterRow(row, options) {
+        var data = [];
+        for (var i = 0; i < options.hourCount; ++i) {
+            data.push(row.data[i]);
+        }
+        return {key: row.key, data: data};
+    }
+
+    function filterData(data, options) {
+        var filteredData = []
+        for (var i = 0; i < data.length; ++i) {
+            if (options.weekDays.indexOf(data[i].key) >= 0) {
+                filteredData.push(filterRow(data[i], options));
+            }
+        }
+        return filteredData;
+    }
+
+    function refilter() {
+        filteredData = filterData(data, options);
+        chart.draw(filteredData);
+    }
+
     function rebuild() {
         data = genData();
-        chart.draw(data);
+        refilter();
     }
 
     function onResize() {
         width = window.innerWidth*0.70
         chart.width(width);
         chart.height(width*0.3);
-        chart.draw(data);
+        chart.draw(filteredData);
     }
 
     window.addEventListener('resize', onResize);
@@ -91,16 +115,17 @@
     document.getElementById('hour-count')
         .addEventListener("change", function() {
             options.hourCount = document.getElementById('hour-count').value;
-            rebuild();
+            refilter();
     });
 
     document.getElementById('week-days')
         .addEventListener("change", function() {
             options.weekDays = document.getElementById('week-days').value.split(',');
-            rebuild();
+            refilter();
     });
 
     data = genData();
+    filteredData = filterData(data, options);
     onResize();
 
 }());
