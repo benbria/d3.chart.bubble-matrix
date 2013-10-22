@@ -2,11 +2,15 @@
   "name": "d3.chart.bubble-matrix",
   "description": "A bubble-matrix chart.",
   "version": "0.1.0",
-  "author": "Jean Lauliac",
+  "author": "Benbria",
   "license": {
     "type": "MIT Expat",
     "url": "https://raw.github.com/undashes/d3.chart.bubble-matrix/master/LICENSE"
   },
+  "contributors": [
+    "Jean Lauliac <jean@lauliac.com>",
+    "Geoffry Song"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/undashes/d3.chart.bubble-matrix.git"
