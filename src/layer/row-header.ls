@@ -26,8 +26,11 @@ transform-row = (sel, chart) ->
 #
 o.events[\enter] = ->
     chart = @chart!
-    @text -> chart.row-header_ ...
     @call transform-row, chart
+
+o.events[\merge] = ->
+    chart = @chart!
+    @text -> chart.row-header_ ...
 
 # Fade-in an entering header.
 o.events[\enter:transition] = ->

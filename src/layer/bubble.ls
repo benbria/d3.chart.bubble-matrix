@@ -56,25 +56,33 @@ bubble-merge-transition = (sel, chart) ->
         color = chart.color-scale_ (chart.color_ d)
         d3.select(this).transition()
             .attr \fill, color
-        # FIXME: make it configurable, or remove it definitely.
-        #@setAttribute \stroke, d3.lab(color).darker(0.2).toString()
+
+transform-row = (sel, chart) ->
+    @attr \transform, (d, i) -> "translate(0,#{chart.y-scale_ i})"
+
+o.events[\enter] = ->
+    chart = @chart!
+    @call transform-row, chart
 
 # Ensure entering and exisiting rows are at the correct location, then
 # add/remove bubbles as necessary for each row.
 #
 o.events[\merge] = ->
     chart = @chart!
-    @attr \transform, (d, i) -> "translate(0,#{chart.y-scale_ i})"
     bubbles = @select-all \circle .data (d) -> chart.row-data_ d
     bubbles.enter!append \circle .call bubble-enter, chart
     bubbles.exit!call bubble-exit, chart
     bubbles.call bubble-merge, chart
+    bubbles.transition!call bubble-merge-transition, chart
+
+o.events[\update:transition] = ->
+    chart = @chart!
+    @call transform-row, chart
 
 # Transition each bubble in rows.
 #
-o.events[\merge:transition] = ->
-    chart = @chart!
-    @select-all \circle .call bubble-merge-transition, chart
+#o.events[\merge:transition] = ->
+#    chart = @chart!
 
 # Remove exiting rows.
 #

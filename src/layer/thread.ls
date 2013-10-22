@@ -16,15 +16,20 @@ o.data-bind = (data) ->
 #
 o.insert = ->
     chart = @chart!
-    g = @append \g .classed \thread, true
+    g = @append \g .classed \thread, true .attr \opacity 0
     g.append \path
     g
+
+transform-thread = (sel, chart) ->
+    @attr \transform, (d, i) -> "translate(0,#{chart.y-scale_ i})"
+
+o.events[\enter] = ->
+    @call transform-thread, @chart!
 
 # Make sure the thread is properly located and sized.
 #
 o.events[\merge] = ->
     chart = @chart!
-    @attr \transform, (d, i) -> "translate(0,#{chart.y-scale_ i})"
     range = chart.x-scale_.range()
     left = chart.left-margin_
     tick-height = TICK_HEIGHT * chart.radius-scale_ 1
@@ -32,9 +37,19 @@ o.events[\merge] = ->
     path += "M #{left} 0 H #{range[range.length-1]}"
     @select \path .attr \d, path
 
-# Remove exiting thread groups.
+# Fade-in an entering header.
+o.events[\enter:transition] = ->
+    @attr \opacity, 1
+
+# Move smoothly the header to its new location.
 #
-o.events[\exit] = ->
-    @remove()
+o.events[\update:transition] = ->
+    chart = @chart!
+    @call transform-thread, chart
+
+# Make the exiting header disappear smoothly.
+#
+o.events[\exit:transition] = ->
+    @attr \opacity 0 .remove!
 
 exports.thread-options = o
