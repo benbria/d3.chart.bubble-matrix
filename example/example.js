@@ -148,7 +148,7 @@
     }
 
     function onResize() {
-        width = window.innerWidth*0.70
+        width = window.innerWidth*0.80
         chart.width(width);
         chart.height(width*0.3);
         chart.draw(filteredData);

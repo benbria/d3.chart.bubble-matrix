@@ -28,6 +28,8 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
         @base.classed \d3-chart-bubble-matrix, true
         @x-scale_ = d3.scale.ordinal!
         @y-scale_ = d3.scale.ordinal!
+        @x-range_ = [0,0]
+        @y-range_ = [0,0]
         @radius-scale_ = d3.scale.sqrt!
         @left-margin_ = 0
         @slanted_ or @slanted false
@@ -39,22 +41,43 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
         @layer \bubble, bubble-gr, exports.bubble-options
         @layer \row-header, row-header-gr, exports.row-header-options
         @layer \col-header, col-header-gr, exports.col-header-options
-        @on \change:width, -> @setup-scales_!
-        @on \change:height, -> @setup-scales_!
+        @on \change:width, -> @setup-viewport_!
+        @on \change:height, -> @setup-viewport_!
 
     # Do the initial data processing. Update the X and Y scale domains
     # according with the data length, and update the radius scale depending on
     # the available space.
     #
     transform: (data) ->
-        chart = this
-        chart.y-scale_.domain d3.range 0, data.length
-        chart.x-scale_.domain d3.range 0, (chart.row-data_ data[0]).length
-        x-delta = (chart.x-scale_ 1) - (chart.x-scale_ 0)
-        y-delta = (chart.y-scale_ 1) - (chart.y-scale_ 0)
+        row-count = data.length
+        col-count = (@row-data_ data[0]).length
+        x-delta = (@x-range_[1] - @x-range_[0]) / col-count
+        y-delta = (@y-range_[1] - @y-range_[0]) / row-count
+        @x-scale_.domain d3.range 0, col-count
+        @y-scale_.domain d3.range 0, row-count
         delta = x-delta <? y-delta
-        chart.radius-scale_.range [0, delta * (1-RADIUS_PADDING) / 2]
+        right = @x-range_[0] + delta * col-count
+        bottom = @y-range_[0] + delta * row-count
+        @x-scale_.rangePoints [@x-range_[0], right], HZ_PADDING
+        @y-scale_.rangePoints [@y-range_[0], bottom], VT_PADDING
+        @bottom-margin_ = bottom + COL_HEADER_PADDING * @height!
+        delta = (@x-scale_ 1) - (@x-scale_ 0)
+        @radius-scale_.range [0, delta * (1-RADIUS_PADDING) / 2]
         data
+
+    # Setup the view ranges for the chart to fit in. This shall be called when
+    # the parent element size change.
+    #
+    setup-viewport_: (delta) ->
+        width = @width!
+        height = @height!
+        @left_ = ROW_HEADER_MARGIN * width
+        @bottom_ = (1-COL_HEADER_MARGIN) * height
+        @x-range_ = [@left_, width]
+        @y-range_ = [0, @bottom_]
+        left-margin = @left-margin_
+        @left-margin_ = @left_ - ROW_HEADER_PADDING * width
+        @trigger 'margin', @left-margin_ if @left-margin_ != left-margin
 
     # XXX: those are functions that let the graph extract the correct
     #      information from the data, but it's not very satisfying. This may
@@ -81,14 +104,3 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
     # Enable slanted column labels.
     #
     slanted:        makeProp \slanted_
-
-    setup-scales_: ->
-        width = @width!
-        height = @height!
-        left = ROW_HEADER_MARGIN * width
-        bottom = (1-COL_HEADER_MARGIN) * height
-        @left-margin_ = left - ROW_HEADER_PADDING * width
-        @bottom-margin_ = bottom + COL_HEADER_PADDING * height
-        @x-scale_.rangePoints [left, width], HZ_PADDING
-        @y-scale_.rangePoints [0, bottom], VT_PADDING
-        @trigger 'margin', @left-margin_

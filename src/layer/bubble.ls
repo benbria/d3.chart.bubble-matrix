@@ -39,7 +39,7 @@ bubble-exit = (sel, chart) ->
 # Transition the bubbles to their final radius and color, according with data.
 #
 bubble-merge-transition = (sel, chart) ->
-    @delay (d, i, j) -> i*5+j*20
+    #@delay (d, i, j) -> i*5+j*20
     @attr \r, (d) -> chart.radius-scale_ (chart.radius_ d)
     @each (d) ->
         color = chart.color-scale_ (chart.color_ d)
