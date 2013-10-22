@@ -1,6 +1,8 @@
 # d3.chart.bubble-matrix
 
-A bubble-matrix chart.
+A bubble-matrix chart, working on any kind of bidimensional data.
+
+![bubble matrix](/doc/screenshot.png)
 
 ### Sample Use
 
