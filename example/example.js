@@ -1,5 +1,37 @@
 (function() {
 
+    // Borrowed from Underscore.js 1.5.2
+    //     http://underscorejs.org
+    //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+    //     Underscore may be freely distributed under the MIT license.
+    // Returns a function, that, as long as it continues to be invoked, will not
+    // be triggered. The function will be called after it stops being called for
+    // N milliseconds. If `immediate` is passed, trigger the function on the
+    // leading edge, instead of the trailing.
+    function _debounce(func, wait, immediate) {
+        var timeout, args, context, timestamp, result;
+        return function() {
+          context = this;
+          args = arguments;
+          timestamp = new Date();
+          var later = function() {
+            var last = (new Date()) - timestamp;
+            if (last < wait) {
+              timeout = setTimeout(later, wait - last);
+            } else {
+              timeout = null;
+              if (!immediate) { result = func.apply(context, args); }
+            }
+          };
+          var callNow = immediate && !timeout;
+          if (!timeout) {
+            timeout = setTimeout(later, wait);
+          }
+          if (callNow) { result = func.apply(context, args); }
+          return result;
+        };
+    }
+
     var DayNames = {
         MON: 'Monday',
         TUE: 'Tuesday',
@@ -122,7 +154,7 @@
         chart.draw(filteredData);
     }
 
-    window.addEventListener('resize', onResize);
+    window.addEventListener('resize', _debounce(onResize, 100));
     document.getElementById('refresh').addEventListener("click", rebuild);
 
     document.getElementById('hour-count')

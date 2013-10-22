@@ -2,8 +2,6 @@
 #
 o = {events: {}}
 
-const COL_HEADER_PADDING = 0.01
-
 # Bind data to the header. The data for column headers is merely the
 # range [0,N] where N is the column count.
 #
@@ -23,7 +21,7 @@ o.insert = ->
 o.events[\merge] = ->
     chart = @chart!
     slanted = chart.slanted_
-    bottom = chart.bottom-margin_ + COL_HEADER_PADDING * chart.height!
+    bottom = chart.bottom-margin_
     @text (d) -> d
     @attr \transform, (d, i) ->
         result = "translate(#{chart.x-scale_ i},#bottom)"

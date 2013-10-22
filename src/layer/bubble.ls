@@ -2,23 +2,13 @@
 #
 o = {events: {}}
 
-# Relative padding between the bubbles.
-const RADIUS_PADDING = 0.1
 # White-space amount around bubbles as a coef. of the maximum radius.
 const STROKE_WIDTH = 0.15
 
-# Bind data to the bubble rows. It also update the X and Y scale domains
-# according with the data length, and update the radius scale depending
-# on the available space.
+# Bind data to the bubble rows.
 #
 o.data-bind = (data) ->
     chart = @chart!
-    chart.y-scale_.domain d3.range 0, data.length
-    chart.x-scale_.domain d3.range 0, (chart.row-data_ data[0]).length
-    delta = (chart.x-scale_ 1) - (chart.x-scale_ 0)
-    delta2 = (chart.y-scale_ 1) - (chart.y-scale_ 0)
-    delta = if delta < delta2 then delta else delta2
-    chart.radius-scale_.range [0, delta * (1-RADIUS_PADDING) / 2]
     @select-all \g.row .data data, chart.row-key_
 
 # Insert groups for each bubble row.
@@ -50,7 +40,6 @@ bubble-exit = (sel, chart) ->
 #
 bubble-merge-transition = (sel, chart) ->
     @delay (d, i, j) -> i*5+j*20
-    @duration 200
     @attr \r, (d) -> chart.radius-scale_ (chart.radius_ d)
     @each (d) ->
         color = chart.color-scale_ (chart.color_ d)
