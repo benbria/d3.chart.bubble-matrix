@@ -1,37 +1,7 @@
 (function() {
 
-    // Borrowed from Underscore.js 1.5.2
-    //     http://underscorejs.org
-    //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-    //     Underscore may be freely distributed under the MIT license.
-    // Returns a function, that, as long as it continues to be invoked, will not
-    // be triggered. The function will be called after it stops being called for
-    // N milliseconds. If `immediate` is passed, trigger the function on the
-    // leading edge, instead of the trailing.
-    function _debounce(func, wait, immediate) {
-        var timeout, args, context, timestamp, result;
-        return function() {
-          context = this;
-          args = arguments;
-          timestamp = new Date();
-          var later = function() {
-            var last = (new Date()) - timestamp;
-            if (last < wait) {
-              timeout = setTimeout(later, wait - last);
-            } else {
-              timeout = null;
-              if (!immediate) { result = func.apply(context, args); }
-            }
-          };
-          var callNow = immediate && !timeout;
-          if (!timeout) {
-            timeout = setTimeout(later, wait);
-          }
-          if (callNow) { result = func.apply(context, args); }
-          return result;
-        };
-    }
-
+    // Enumerate week days.
+    //
     var DayNames = {
         MON: 'Monday',
         TUE: 'Tuesday',
@@ -42,44 +12,48 @@
         SUN: 'Sunday'
     }
 
-    var HOUR_NAMES = ['12a', '1a', '2a', '3a', '4a', '5a', '6a', '7a',
-                      '8a', '9a', '10a', '11a', '12p', '1p', '2p', '3p',
-                      '4p', '5p', '6p', '7p', '8p', '9p', '10p', '11p'];
+    // Initial color palette to use.
+    //
+    var INIT_PALETTE = 'RdBu';
 
+    // Randomness modifiers in order to obtain a real-looking chart.
+    //
     var HOUR_VOLUMES = [0, -0.1, -0.1, -0.1, -0.1, -0.1, 0.1, 0.2,
                         0.7, 0.8, 0.6, 0.5, 0.9, 0.8, 0.7, 0.5,
                         0.3, 0.4, 0.5, 0.7, 0.9, 0.8, 0.6, 0.3,]
 
-    function nullableScale(v, fn) {
-        var innerFn = fn;
-        var result = function(c) {
-            if (c == null)
-                return v;
-            return innerFn(c);
-        }
-        result.inner = function(fn) {
-            if (fn == null)
-                return innerFn;
-            innerFn = fn;
-        }
-        return result;
-    }
+    // Create the color scale from the palette.
+    //
+    var colorScale = d3.scale.quantize().domain([0,1])
+                       .range(colorbrewer[INIT_PALETTE][9]);
 
+    // Create and configure the chart.
+    //
     var chart = d3.select("#vis")
         .append("svg")
         .chart("BubbleMatrix")
         .rowKey(function (d) { return d.key; })
         .rowHeader(function (d) { return DayNames[d.key]; })
         .rowData(function (d) { return d.data; })
-        .colHeader(function (i) { return HOUR_NAMES[i]; })
+        .colHeader(utils.hourName)
         .radius(function (d) { return d.volume; })
         .color(function (d) { return d.positivity; })
-        .colorScale(nullableScale('#ddd', d3.scale.quantize()
-            .domain([0,1])
-            .range(colorbrewer.RdYlBu[9])))
+        .colorScale(utils.nullableScale('#ddd', colorScale))
         .on('margin', function(value) {
                 this.base.style('margin-left', '-' + value + 'px');
             });
+
+    // Demonstrate the ability to change some inner elements of the chart
+    // quite easily. Here, we highlight the daytime hours by setting a
+    // light color to other headers.
+    //
+    chart.layer('col-header').on('enter', function() {
+        this.style('fill', function(d, i) {
+            if (i > 6 && i < 20)
+                return null;
+            return '#ccc';
+        });
+    });
 
     var jx = 0;
     function genRndRow(key) {
@@ -154,7 +128,7 @@
         chart.draw(filteredData);
     }
 
-    window.addEventListener('resize', _debounce(onResize, 100));
+    window.addEventListener('resize', utils._debounce(onResize, 100));
     document.getElementById('refresh').addEventListener("click", rebuild);
 
     document.getElementById('hour-count')
@@ -178,11 +152,11 @@
         el.text = pl;
         paletteSelect.appendChild(el);
     }
-    paletteSelect.value = 'RdYlBu';
+    paletteSelect.value = INIT_PALETTE;
 
     paletteSelect.addEventListener("change", function() {
             var palette = paletteSelect.value;
-            chart.colorScale().inner().range(colorbrewer[palette][9]);
+            colorScale.range(colorbrewer[palette][9]);
             redraw();
     });
 
