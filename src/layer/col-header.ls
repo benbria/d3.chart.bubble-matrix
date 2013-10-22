@@ -2,17 +2,14 @@
 #
 o = {events: {}}
 
+const COL_HEADER_PADDING = 0.01
+
 # Bind data to the header. The data for column headers is merely the
 # range [0,N] where N is the column count.
 #
 o.data-bind = (data) ->
     chart = @chart!
     col-data = [chart.col-header_ i for i in chart.x-scale_.domain!]
-    chart.slanted_ = false
-    for col in col-data
-        continue unless col.length > 3
-        chart.slanted_ = true
-        break
     @select-all \text .data col-data
 
 # Insert a text for each column.
@@ -26,7 +23,7 @@ o.insert = ->
 o.events[\merge] = ->
     chart = @chart!
     slanted = chart.slanted_
-    bottom = chart.bottom-margin_ + chart.radius-scale_ 2
+    bottom = chart.bottom-margin_ + COL_HEADER_PADDING * chart.height!
     @text (d) -> d
     @attr \transform, (d, i) ->
         result = "translate(#{chart.x-scale_ i},#bottom)"

@@ -53,7 +53,7 @@
     function genRndRow(key) {
         row = [];
         for (var i = 0; i < 24; ++i) {
-            var v = Math.random()*0.2 + HOUR_VOLUMES[i];
+            var v = Math.random() * HOUR_VOLUMES[i]*1.5;
             var p = Math.random();
 
             if (v < 0.1) {
@@ -106,9 +106,7 @@
     }
 
     function refilter() {
-        console.log('DATA', data);
         filteredData = filterData(data, options);
-        console.log('FILTERED', filteredData);
         redraw();
     }
 

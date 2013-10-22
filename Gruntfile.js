@@ -103,7 +103,7 @@ module.exports = function(grunt) {
         "jshint", "livescript", "concat", "uglify", "stylus"
     ]);
 
-    grunt.registerTask("devel", [
+    grunt.registerTask("dev", [
         "livescript", "concat", "stylus", "watch"
     ]);
 

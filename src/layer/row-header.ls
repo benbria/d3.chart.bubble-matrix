@@ -2,7 +2,7 @@
 #
 o = {events: {}}
 
-const ROW_HEADER_PADDING = 0.01
+const ROW_HEADER_PADDING = 0.05
 
 # Bind data to the header.
 #

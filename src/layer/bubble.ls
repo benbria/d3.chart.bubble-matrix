@@ -54,7 +54,7 @@ bubble-merge-transition = (sel, chart) ->
     @attr \r, (d) -> chart.radius-scale_ (chart.radius_ d)
     @each (d) ->
         color = chart.color-scale_ (chart.color_ d)
-        d3.select(this).transition()
+        d3.select this .transition()
             .attr \fill, color
 
 transform-row = (sel, chart) ->

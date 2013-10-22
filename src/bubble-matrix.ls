@@ -10,6 +10,7 @@ const VT_PADDING = 1.0
 const ROW_HEADER_MARGIN = 0.15
 const COL_HEADER_MARGIN = 0.1
 const ROW_HEADER_PADDING = 0.01
+const COL_HEADER_PADDING = 0.05
 
 # Declare the chart.
 #
@@ -20,6 +21,7 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
         @y-scale_ = d3.scale.ordinal!
         @radius-scale_ = d3.scale.sqrt!
         @left-margin_ = 0
+        @slanted_ or @slanted false
         thread-gr = @base.append \g .classed \thread, true
         bubble-gr = @base.append \g .classed \bubble, true
         row-header-gr = @base.append \g .classed \row-header, true
@@ -53,13 +55,17 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
     #
     color-scale:    makeProp \colorScale_
 
+    # Enable slanted column labels.
+    #
+    slanted:        makeProp \slanted_
+
     setup-scales_: ->
         width = @width!
         height = @height!
         left = ROW_HEADER_MARGIN * width
         bottom = (1-COL_HEADER_MARGIN) * height
         @left-margin_ = left - ROW_HEADER_PADDING * width
-        @bottom-margin_ = bottom
+        @bottom-margin_ = bottom + COL_HEADER_PADDING * height
         @x-scale_.rangePoints [left, width], HZ_PADDING
         @y-scale_.rangePoints [0, bottom], VT_PADDING
         @trigger 'margin', @left-margin_
