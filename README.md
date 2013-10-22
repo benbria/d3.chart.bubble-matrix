@@ -1,6 +1,6 @@
 # d3.chart.bubble-matrix
 
-A bubble-matrix representation.
+A bubble-matrix chart.
 
 ### Sample Use
 
