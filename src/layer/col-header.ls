@@ -7,7 +7,13 @@ o = {events: {}}
 #
 o.data-bind = (data) ->
     chart = @chart!
-    @select-all \text .data chart.x-scale_.domain!
+    col-data = [chart.col-header_ i for i in chart.x-scale_.domain!]
+    chart.slanted_ = false
+    for col in col-data
+        continue unless col.length > 3
+        chart.slanted_ = true
+        break
+    @select-all \text .data col-data
 
 # Insert a text for each column.
 #
@@ -19,10 +25,13 @@ o.insert = ->
 #
 o.events[\merge] = ->
     chart = @chart!
+    slanted = chart.slanted_
     bottom = chart.bottom-margin_ + chart.radius-scale_ 2
-    @text (d) -> chart.col-header_ ...
+    @text (d) -> d
     @attr \transform, (d, i) ->
-        "translate(#{chart.x-scale_ i},#bottom)"
+        result = "translate(#{chart.x-scale_ i},#bottom)"
+        result += 'rotate(45)' if slanted
+        result
 
 # Just remove exiting columns.
 #
