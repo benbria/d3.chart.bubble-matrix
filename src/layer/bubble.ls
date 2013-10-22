@@ -19,7 +19,7 @@ o.data-bind = (data) ->
     delta2 = (chart.y-scale_ 1) - (chart.y-scale_ 0)
     delta = if delta < delta2 then delta else delta2
     chart.radius-scale_.range [0, delta * (1-RADIUS_PADDING) / 2]
-    @select-all \g.row .data data
+    @select-all \g.row .data data, chart.row-key_
 
 # Insert groups for each bubble row.
 #

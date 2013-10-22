@@ -8,7 +8,7 @@ const ROW_HEADER_PADDING = 0.01
 #
 o.data-bind = (data) ->
     chart = @chart!
-    @select-all \text .data data
+    @select-all \text .data data, chart.row-key_
 
 # Insert a text for each row.
 #

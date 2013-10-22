@@ -1,9 +1,4 @@
 (function() {
-    var data = null;
-    var filteredData = null;
-    var options = {hourCount: 24};
-
-    options.weekDays = document.getElementById('week-days').value.split(',');
 
     var DayNames = {
         MON: 'Monday',
@@ -75,8 +70,8 @@
 
     function genData() {
         var data = [];
-        for (var i = 0; i < options.weekDays.length; ++i) {
-            data.push(genRndRow(options.weekDays[i]));
+        for (var key in DayNames) {
+            data.push(genRndRow(key));
         }
         return data;
     }
@@ -99,12 +94,21 @@
         return filteredData;
     }
 
+
+
+    var data = null;
+    var filteredData = null;
+    var options = {hourCount: 24};
+    options.weekDays = document.getElementById('week-days').value.split(',');
+
     function redraw() {
         chart.draw(filteredData);
     }
 
     function refilter() {
+        console.log('DATA', data);
         filteredData = filterData(data, options);
+        console.log('FILTERED', filteredData);
         redraw();
     }
 

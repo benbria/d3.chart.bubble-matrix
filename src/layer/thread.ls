@@ -10,7 +10,7 @@ const TICK_HEIGHT = 1
 #
 o.data-bind = (data) ->
     chart = @chart!
-    @select-all \g.thread .data data
+    @select-all \g.thread .data data, chart.row-key_
 
 # Insert groups for each thread.
 #
