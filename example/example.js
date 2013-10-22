@@ -24,11 +24,18 @@
                         0.3, 0.4, 0.5, 0.7, 0.9, 0.8, 0.6, 0.3,]
 
     function nullableScale(v, fn) {
-        return function(c) {
+        var innerFn = fn;
+        var result = function(c) {
             if (c == null)
                 return v;
-            return fn(c);
+            return innerFn(c);
         }
+        result.inner = function(fn) {
+            if (fn == null)
+                return innerFn;
+            innerFn = fn;
+        }
+        return result;
     }
 
     var chart = d3.select("#vis")
@@ -92,9 +99,13 @@
         return filteredData;
     }
 
+    function redraw() {
+        chart.draw(filteredData);
+    }
+
     function refilter() {
         filteredData = filterData(data, options);
-        chart.draw(filteredData);
+        redraw();
     }
 
     function rebuild() {
@@ -122,6 +133,23 @@
         .addEventListener("change", function() {
             options.weekDays = document.getElementById('week-days').value.split(',');
             refilter();
+    });
+
+    var paletteSelect = document.getElementById('palette');
+
+    for (pl in colorbrewer) {
+        if (colorbrewer[pl][9] == undefined)
+            continue;
+        var el = document.createElement('option');
+        el.text = pl;
+        paletteSelect.appendChild(el);
+    }
+    paletteSelect.value = 'RdYlBu';
+
+    paletteSelect.addEventListener("change", function() {
+            var palette = paletteSelect.value;
+            chart.colorScale().inner().range(colorbrewer[palette][9]);
+            redraw();
     });
 
     data = genData();

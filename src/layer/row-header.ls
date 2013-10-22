@@ -14,21 +14,39 @@ o.data-bind = (data) ->
 #
 o.insert = ->
     chart = @chart!
-    @append \text
+    @append \text .attr \opacity 0
 
-# Update the text of each row header and its location.
-#
-o.events[\merge] = ->
-    chart = @chart!
+transform-row = (sel, chart) ->
     width = chart.width!
     left = chart.left-margin_ - ROW_HEADER_PADDING * width
-    @text -> chart.row-header_ ...
     @attr \transform, (d, i) ->
         "translate(#left,#{chart.y-scale_ i})"
 
+# Update the text of each row header and its location.
+#
+o.events[\enter] = ->
+    chart = @chart!
+    @text -> chart.row-header_ ...
+    @call transform-row, chart
+
+# Fade-in an entering header.
+o.events[\enter:transition] = ->
+    @attr \opacity, 1
+
+# Move smoothly the header to its new location.
+#
+o.events[\update:transition] = ->
+    chart = @chart!
+    @call transform-row, chart
+
+# Make the exiting header disappear smoothly.
+#
+o.events[\exit:transition] = ->
+    @attr \opacity 0 .remove!
+
 # Just remove exiting headers.
 #
-o.events[\exit] = ->
-    @remove()
+#o.events[\exit] = ->
+    #@remove()
 
 exports.row-header-options = o

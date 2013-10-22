@@ -15,9 +15,9 @@
             #vis { margin: 2rem 0; }
             body, input, select { font: 100% "Open Sans", sans-serif;
                 color: #333; }
-            #wrapper { margin-left: 10em; }
-            label { display: block; margin: 0.5em 0; }
-            input, select { margin-left: 5em; }
+            #wrapper { margin-left: 10em; padding: 2em 0 5em 0; }
+            label { display: block; margin: 0.5em 0; position: relative;}
+            input, select { position: absolute; left: 10em; }
         </style>
 	</head>
 	<body>
@@ -35,6 +35,10 @@
                         <option value="MON,TUE,WED,THU,FRI,SAT,SUN">Full week</option>
                         <option value="MON,TUE,WED,THU,FRI">Business week</option>
                         <option value="SAT,SUN">Weekend</option>
+                    </select>
+                </label>
+                <label>Palette
+                    <select id="palette">
                     </select>
                 </label>
             </form>

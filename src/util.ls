@@ -5,6 +5,7 @@
 #
 exports.makeProp = (name, fn) ->
     (it) ->
-        if it? then this[name] = it else this[name]
+        return this[name] unless it?
+        this[name] = it
         fn(it) if fn?
         this
