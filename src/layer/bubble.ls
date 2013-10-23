@@ -22,13 +22,16 @@ o.insert = ->
 #
 bubble-enter = (sel, chart) ->
     @attr \r, 0
-    @attr \fill, 'white'
+    @attr \fill, (d) -> chart.color-scale_ (chart.color_ d)
+    @attr \opacity, 0
+    @attr \cx, (d, i) -> chart.x-scale_ i
+
+bubble-enter-transition = (sel, chart) ->
 
 # Make sure both entering and existing bubbles are at the correct location
 # and have the correct white spacing around.
 #
 bubble-merge = (sel, chart) ->
-    @attr \cx, (d, i) -> chart.x-scale_ i
     @attr \stroke-width, STROKE_WIDTH * chart.radius-scale_ 1
 
 # Remove bubbles.
@@ -39,12 +42,13 @@ bubble-exit = (sel, chart) ->
 # Transition the bubbles to their final radius and color, according with data.
 #
 bubble-merge-transition = (sel, chart) ->
-    #@delay (d, i, j) -> i*5+j*20
+    @attr \opacity, 1
+    @attr \cx, (d, i) -> chart.x-scale_ i
+    if chart.swoop_
+        @duration 200
+        @delay (d, i, j) -> i*5+j*10
     @attr \r, (d) -> chart.radius-scale_ (chart.radius_ d)
-    @each (d) ->
-        color = chart.color-scale_ (chart.color_ d)
-        d3.select this .transition()
-            .attr \fill, color
+    @attr \fill, (d) -> chart.color-scale_ (chart.color_ d)
 
 transform-row = (sel, chart) ->
     @attr \transform, (d, i) -> "translate(0,#{chart.y-scale_ i})"

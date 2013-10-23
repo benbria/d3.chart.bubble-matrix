@@ -31,6 +31,7 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
         @radius-scale_ = d3.scale.sqrt!
         @left-margin_ = 0
         @slanted_ or @slanted false
+        @swoop_ or @swoop false
         @ruler_ = exports.text-ruler @base
         thread-gr = @base.append \g .classed \thread, true
         bubble-gr = @base.append \g .classed \bubble, true
@@ -102,6 +103,7 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
     col-header:     makeProp \colHeader_
     radius:         makeProp \radius_
     color:          makeProp \color_
+    swoop:          makeProp \swoop_
 
     # Set the input domain for bubble radiuses. The range is automatically
     # determined by the chart depending on the available space.

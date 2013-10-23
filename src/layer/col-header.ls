@@ -14,19 +14,31 @@ o.data-bind = (data) ->
 #
 o.insert = ->
     chart = @chart!
-    @append \text
+    @append \text .attr \opacity 0
+
+transform-col = (sel, chart) ->
+    bottom = chart.bottom-margin_
+    slanted = chart.slanted_
+    @attr \transform, (d, i) ->
+        result = "translate(#{chart.x-scale_ i},#bottom)"
+        result += 'rotate(45)' if slanted
+        result
+
+o.events[\enter] = ->
+    @call transform-col, @chart!
 
 # Update the text of each column header and its location.
 #
 o.events[\merge] = ->
     chart = @chart!
-    slanted = chart.slanted_
-    bottom = chart.bottom-margin_
     @text (d) -> d
-    @attr \transform, (d, i) ->
-        result = "translate(#{chart.x-scale_ i},#bottom)"
-        result += 'rotate(45)' if slanted
-        result
+
+o.events[\enter:transition] = ->
+    @attr \opacity 1
+
+o.events[\update:transition] = ->
+    chart = @chart!
+    @call transform-col, chart
 
 # Just remove exiting columns.
 #

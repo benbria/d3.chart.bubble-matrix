@@ -279,7 +279,7 @@ d3Chart.assert(typeof d3.version === "string" && d3.version.match(/^3/),
 				selection._chart = this;
 				this._layers[name] = selection;
 				return this._layers[name];
-			
+
 			} else {
 				d3Chart.assert(false, "When reattaching a layer, the second argument "+
 					"must be a d3.chart layer");
