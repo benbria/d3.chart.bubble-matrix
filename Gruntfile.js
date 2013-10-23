@@ -1,30 +1,35 @@
+'use strict';
+
 module.exports = function(grunt) {
-    "use strict";
 
     grunt.initConfig({
         meta: {
-            pkg: grunt.file.readJSON("package.json"),
+            pkg: grunt.file.readJSON('package.json'),
             srcFiles: [
-                "src/meta/intro.js",
-                ".build/util.js",
-                ".build/layer/*.js",
-                ".build/bubble-matrix.js",
-                "src/meta/outro.js"
+                'src/meta/intro.js',
+                '.build/util.js',
+                '.build/layer/*.js',
+                '.build/bubble-matrix.js',
+                'src/meta/outro.js'
             ],
             chartName: 'bubble-matrix'
         },
         watch: {
             scripts: {
-                files: ["src/**/*.{js,ls}"],
-                tasks: ["livescript", "concat"]
+                files: ['src/**/*.{js,ls}'],
+                tasks: ['livescript', 'concat']
             },
             style: {
-                files: ["src/style/**/*.styl"],
-                tasks: ["stylus:style"]
+                files: ['src/style/**/*.styl'],
+                tasks: ['stylus:style']
             },
             theme: {
-                files: ["src/theme/**/*.styl"],
-                tasks: ["stylus:theme"]
+                files: ['src/theme/**/*.styl'],
+                tasks: ['stylus:theme']
+            },
+            livereload: {
+                options: {livereload: true},
+                files: ['dist/*.{js,css}']
             }
         },
         jshint: {
@@ -37,7 +42,7 @@ module.exports = function(grunt) {
                     node: true
                 },
                 files: {
-                    src: ["Gruntfile.js"]
+                    src: ['Gruntfile.js']
                 }
             }
         },
@@ -54,58 +59,80 @@ module.exports = function(grunt) {
         },
         concat: {
             options: {
-                banner: "/*! <%= meta.pkg.name %> v<%= meta.pkg.version %>" +
-                        " - <%= meta.pkg.license.type %> */\n"
+                banner: '/*! <%= meta.pkg.name %> v<%= meta.pkg.version %>' +
+                        ' - <%= meta.pkg.license.type %> */\n'
             },
             dist: {
                 files: {
-                    "dist/d3.chart.<%= meta.chartName %>.js":
-                        "<%= meta.srcFiles %>"
+                    'dist/d3.chart.<%= meta.chartName %>.js':
+                        '<%= meta.srcFiles %>'
                 }
             }
         },
         uglify: {
             options: {
                 // Preserve banner
-                preserveComments: "some"
+                preserveComments: 'some'
             },
             dist: {
                 files: {
-                    "dist/d3.chart.<%= meta.chartName %>.min.js":
-                        "dist/d3.chart.<%= meta.chartName %>.js"
+                    'dist/d3.chart.<%= meta.chartName %>.min.js':
+                        'dist/d3.chart.<%= meta.chartName %>.js'
                 }
             }
         },
         stylus: {
             style: {
                 files: {
-                    "dist/d3.chart.<%= meta.chartName %>.css" :
-                        ["src/style/**/*.styl"]
+                    'dist/d3.chart.<%= meta.chartName %>.css' :
+                        ['src/style/**/*.styl']
                 }
             },
             theme: {
                 files: {
-                    "dist/d3.chart.<%= meta.chartName %>.default.css" :
-                        ["src/theme/**/*.styl"]
+                    'dist/d3.chart.<%= meta.chartName %>.default.css' :
+                        ['src/theme/**/*.styl']
+                }
+            }
+        },
+        copy: {
+            bower: {
+                files: [
+                    {dest: 'dist/', src: ['bower.json']}
+                ]
+            }
+        },
+        connect: {
+            options: {
+                port: 8000,
+                // Change to * to access from all networks.
+                hostname: 'localhost'
+            },
+            dev: {
+                options: {
+                    base: ['bower_components', 'dist', 'example'],
+                    directory: 'example',
+                    livereload: true
                 }
             }
         }
     });
 
-    grunt.loadNpmTasks("grunt-contrib-jshint");
-    grunt.loadNpmTasks("grunt-contrib-concat");
-    grunt.loadNpmTasks("grunt-contrib-uglify");
-    grunt.loadNpmTasks("grunt-contrib-watch");
-    grunt.loadNpmTasks("grunt-contrib-stylus");
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-stylus');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-livescript');
 
-    grunt.registerTask("dist", [
-        "jshint", "livescript", "concat", "uglify", "stylus"
+    grunt.registerTask('dist', [
+        'jshint', 'livescript', 'concat', 'uglify', 'stylus', 'copy'
     ]);
 
-    grunt.registerTask("dev", [
-        "livescript", "concat", "stylus", "watch"
+    grunt.registerTask('dev', [
+        'livescript', 'concat', 'stylus', 'connect', 'watch'
     ]);
-
-    grunt.registerTask("default", "dist");
+    grunt.registerTask('default', 'dist');
 };
