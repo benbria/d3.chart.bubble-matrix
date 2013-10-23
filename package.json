@@ -22,6 +22,10 @@
   "d3.chart": {
     "version": "0.1.3"
   },
+  "dependencies": {
+    "d3": "~3.3.8",
+    "lodash": "~2.2.1"
+  },
   "devDependencies": {
     "LiveScript": "1.2.0",
     "grunt": "~0.4.0",

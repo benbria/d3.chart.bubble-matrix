@@ -28,11 +28,10 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
         @base.classed \d3-chart-bubble-matrix, true
         @x-scale_ = d3.scale.ordinal!
         @y-scale_ = d3.scale.ordinal!
-        @x-range_ = [0,0]
-        @y-range_ = [0,0]
         @radius-scale_ = d3.scale.sqrt!
         @left-margin_ = 0
         @slanted_ or @slanted false
+        @ruler_ = exports.text-ruler @base
         thread-gr = @base.append \g .classed \thread, true
         bubble-gr = @base.append \g .classed \bubble, true
         row-header-gr = @base.append \g .classed \row-header, true
@@ -41,8 +40,6 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
         @layer \bubble, bubble-gr, exports.bubble-options
         @layer \row-header, row-header-gr, exports.row-header-options
         @layer \col-header, col-header-gr, exports.col-header-options
-        @on \change:width, -> @setup-viewport_!
-        @on \change:height, -> @setup-viewport_!
 
     # Do the initial data processing. Update the X and Y scale domains
     # according with the data length, and update the radius scale depending on
@@ -51,33 +48,48 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
     transform: (data) ->
         row-count = data.length
         col-count = (@row-data_ data[0]).length
-        x-delta = (@x-range_[1] - @x-range_[0]) / col-count
-        y-delta = (@y-range_[1] - @y-range_[0]) / row-count
+        left = @update-left-margin_ data, @width!
+        bottom = @get-max-bottom_ data[0], @height!
+        x-delta = (@width! - left) / col-count
+        y-delta = (bottom - 0) / row-count
         @x-scale_.domain d3.range 0, col-count
         @y-scale_.domain d3.range 0, row-count
         delta = x-delta <? y-delta
-        right = @x-range_[0] + delta * col-count
-        bottom = @y-range_[0] + delta * row-count
-        @x-scale_.rangePoints [@x-range_[0], right], HZ_PADDING
-        @y-scale_.rangePoints [@y-range_[0], bottom], VT_PADDING
+        right = left + delta * col-count
+        bottom = delta * row-count
+        @x-scale_.rangePoints [left, right], HZ_PADDING
+        @y-scale_.rangePoints [0, bottom], VT_PADDING
         @bottom-margin_ = bottom + COL_HEADER_PADDING * @height!
         delta = (@x-scale_ 1) - (@x-scale_ 0)
         @radius-scale_.range [0, delta * (1-RADIUS_PADDING) / 2]
         data
 
-    # Setup the view ranges for the chart to fit in. This shall be called when
-    # the parent element size change.
+    # Update the left margin, and return the left position of the available
+    # space to draw the chart bubbles.
     #
-    setup-viewport_: (delta) ->
-        width = @width!
-        height = @height!
-        @left_ = ROW_HEADER_MARGIN * width
-        @bottom_ = (1-COL_HEADER_MARGIN) * height
-        @x-range_ = [@left_, width]
-        @y-range_ = [0, @bottom_]
+    # This is done by determining the largest row header, and adding the
+    # necessary margin (left of the thread tick) and padding (between the
+    # tick and the first bubble).
+    #
+    # The `margin` event is raised when the margin change. This gives the
+    # opportunity for the chart consumer to adjust the SVG negative margin so
+    # that bubble threads are beautifully aligned on the surrounding layout.
+    #
+    update-left-margin_: (data, width) ->
         left-margin = @left-margin_
-        @left-margin_ = @left_ - ROW_HEADER_PADDING * width
+        @left-margin_ = ld.reduce data, (r, d) ~>
+            r >? @ruler_ (@row-header_ d)
+        @left-margin_ += ROW_HEADER_MARGIN * width
         @trigger 'margin', @left-margin_ if @left-margin_ != left-margin
+        @left-margin_ + ROW_HEADER_PADDING * width
+
+    # Get the maximum acceptable bottom position of the available
+    # space to draw the chart bubbles.
+    #
+    # This is determined by the height of the context font.
+    #
+    get-max-bottom_: (data, height) ->
+        height - 2 * (@ruler_.extentOfChar 'W' .height)
 
     # XXX: those are functions that let the graph extract the correct
     #      information from the data, but it's not very satisfying. This may
