@@ -15,6 +15,7 @@ o.data-bind = (data) ->
 o.insert = ->
     chart = @chart!
     @append \text .attr \opacity 0
+                  .attr \dy \.38em
 
 transform-row = (sel, chart) ->
     width = chart.width!

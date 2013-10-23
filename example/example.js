@@ -143,16 +143,17 @@
             refilter();
     });
 
-    var paletteSelect = document.getElementById('palette');
+    var paletteSelect = document.getElementById('color-palette');
 
     for (pl in colorbrewer) {
         if (colorbrewer[pl][9] == undefined)
             continue;
         var el = document.createElement('option');
         el.text = pl;
+        if (pl === INIT_PALETTE)
+            el.setAttribute('selected', 'selected');
         paletteSelect.appendChild(el);
     }
-    paletteSelect.value = INIT_PALETTE;
 
     paletteSelect.addEventListener("change", function() {
             var palette = paletteSelect.value;
