@@ -10,6 +10,7 @@
         <script src="lib/colorbrewer.js"></script>
         <script src="d3.chart.bubble-matrix.js"></script>
         <script src="utils.js"></script>
+        <script src="data.js"></script>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="d3.chart.bubble-matrix.css">
         <link rel="stylesheet" type="text/css" href="d3.chart.bubble-matrix.default.css">
@@ -26,12 +27,17 @@
         <div id="wrapper">
             <h1>Bubble Matrix d3.chart</h1>
             <p>This demonstrate the capabilities of the Bubble Matrix d3.chart.<br>
-                You can <a id='refresh' href='javascript:void(0)'>refresh the chart data.</a></p>
-            <p>See also the <a href='minimal/'>minimal example</a> featured in the README.</p>
+               See also the <a href='minimal/'>minimal example</a> featured in the README.</p>
     		<div id="vis"></div>
             <form>
-                <label>Hour count
-                    <input id="hour-count" type="range" min="4" max="24" value="24">
+                <input type="button" id="refresh" value="Refresh"><br>
+                <label>Day view
+                    <select id="day-hours">
+                        <option value="0,24">Full day</option>
+                        <option value="0,8">Morning night</option>
+                        <option value="8,20">Business day</option>
+                        <option value="18,24">Evening</option>
+                    </select>
                 </label>
                 <label>Week view
                     <select id="week-days">

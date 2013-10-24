@@ -1,53 +1,66 @@
 (function() {
 
-    // Enumerate week days.
+    // Store the complete dataset of the chart.
     //
-    var DayNames = {
-        MON: 'Monday',
-        TUE: 'Tuesday',
-        WED: 'Wednesday',
-        THU: 'Thursday',
-        FRI: 'Friday',
-        SAT: 'Saturday',
-        SUN: 'Sunday'
-    }
+    var data = null;
+
+    // Store the displayed dataset of the chart.
+    //
+    var filteredData = null;
+
+    // Current display options.
+    var options = {hourCount: 24, dayHours: [0,24]};
+    options.weekDays = document.getElementById('week-days').value.split(',');
 
     // Initial color palette to use.
     //
     var INIT_PALETTE = 'RdBu';
-
-    // Randomness modifiers in order to obtain a real-looking chart.
-    //
-    var HOUR_VOLUMES = [0, -0.1, -0.1, -0.1, -0.1, -0.1, 0.1, 0.2,
-                        0.7, 0.8, 0.6, 0.5, 0.9, 0.8, 0.7, 0.5,
-                        0.3, 0.4, 0.5, 0.7, 0.9, 0.8, 0.6, 0.3,]
 
     // Create the color scale from the palette.
     //
     var colorScale = d3.scale.quantize().domain([0,1])
                        .range(colorbrewer[INIT_PALETTE][9]);
 
-    // Create and configure the chart.
+    // Create the chart in an SVG element.
     //
     var chart = d3.select("#vis")
-        .append("svg")
-        .chart("BubbleMatrix")
-        .rows(function (d) { return d; })
-        .rowKey(function (d) { return d.key; })
-        .rowHeader(function (d) { return DayNames[d.key]; })
-        .rowData(function (d) { return d.data; })
-        .columns(function (d) { return d3.range(0, 24); })
-        .colHeader(utils.hourName)
-        .radius(function (d) { return d.volume; })
-        .color(function (d) { return d.positivity; })
-        .colorScale(utils.nullableScale('#ddd', colorScale))
-        .on('margin', function(value) {
-                this.base.style('margin-left', '-' + value + 'px');
-            });
+                  .append("svg")
+                  .chart("BubbleMatrix");
 
-    // Demonstrate the ability to change some inner elements of the chart
-    // quite easily. Here, we highlight the daytime hours by setting a
-    // light color to other headers.
+    // Set up the rows.
+    //
+    chart.rows(function (d) { return d.days; })
+         .rowKey(function (d) { return d.key; })
+         .rowHeader(function (d) { return dataSource.DayNames[d.key]; })
+         .rowData(function (d) { return d.data; })
+
+    // Set up the colums.
+    //
+    chart.columns(function (d) { return d3.range(d.dayHours[0],
+                                                 d.dayHours[1]); })
+         .colKey(function(d) { return d; })
+         .colHeader(utils.hourName)
+
+    // Set up the bubbles.
+    //
+    chart.radius(function (d) { return d.volume; })
+          .color(function (d) { return d.positivity; })
+          .colorScale(utils.nullableScale('#ddd', colorScale))
+
+    // The margin is the space allocated for row headers at the left. We can
+    // listen to its change and move the chart so that bubble threads are
+    // aligned with our paragraphs. `this` here refers to the chart, and
+    // `this.base` is a d3 selection on the SVG element, automatically
+    // provided by the chart.
+    //
+    chart.on('margin', function(value) {
+        this.base.style('margin-left', '-' + value + 'px');
+    });
+
+    // We demonstrate here the ability to change some inner elements of the
+    // chart easily. Here, we highlight the daytime hours by setting a
+    // light color to other headers. Returning `null` makes the header
+    // get the color defined by CSS.
     //
     chart.layer('col-header').on('enter', function() {
         this.style('fill', function(d, i) {
@@ -57,85 +70,42 @@
         });
     });
 
-    var jx = 0;
-    function genRndRow(key) {
-        row = [];
-        for (var i = 0; i < 24; ++i) {
-            var v = Math.random() * HOUR_VOLUMES[i]*1.5;
-            var p = Math.random();
-
-            if (v < 0.1) {
-                v = 0.1
-                p = null
-            }
-            if (v > 1) v = 1;
-            //v = ((i+jx)%24)/24;
-            row.push({volume: v, positivity: p});
-        }
-        ++jx;
-        return {key: key, data: row};
-    }
-
-    function genData() {
-        var data = [];
-        for (var key in DayNames) {
-            data.push(genRndRow(key));
-        }
-        return data;
-    }
-
-    function filterRow(row, options) {
-        var data = [];
-        for (var i = 0; i < options.hourCount; ++i) {
-            data.push(row.data[i]);
-        }
-        return {key: row.key, data: data};
-    }
-
-    function filterData(data, options) {
-        var filteredData = []
-        for (var i = 0; i < data.length; ++i) {
-            if (options.weekDays.indexOf(data[i].key) >= 0) {
-                filteredData.push(filterRow(data[i], options));
-            }
-        }
-        return filteredData;
-    }
-
-
-
-    var data = null;
-    var filteredData = null;
-    var options = {hourCount: 24};
-    options.weekDays = document.getElementById('week-days').value.split(',');
-
+    // Helpers.
+    //
     function redraw() {
         chart.draw(filteredData);
     }
 
     function refilter() {
-        filteredData = filterData(data, options);
+        filteredData = dataSource.filter(data, options);
         redraw();
     }
 
     function rebuild() {
-        data = genData();
+        data = dataSource.generate();
         refilter();
     }
 
-    function onResize() {
+    function resize() {
         width = window.innerWidth*0.70
         chart.width(width);
         chart.height(width*0.3);
-        chart.draw(filteredData);
     }
 
-    window.addEventListener('resize', utils._debounce(onResize, 100));
+    function onResize() {
+        resize();
+        redraw();
+    }
+
+    window.addEventListener('resize', _.debounce(onResize, 100));
     document.getElementById('refresh').addEventListener("click", rebuild);
 
-    document.getElementById('hour-count')
+    document.getElementById('day-hours')
         .addEventListener("change", function() {
-            options.hourCount = document.getElementById('hour-count').value;
+            options.dayHours = document.getElementById('day-hours').value.split(',');
+            options.dayHours[0] = +options.dayHours[0]
+            options.dayHours[1] = +options.dayHours[1]
+            console.log(options.dayHours);
             refilter();
     });
 
@@ -163,8 +133,7 @@
             redraw();
     });
 
-    data = genData();
-    filteredData = filterData(data, options);
-    onResize();
+    resize();
+    rebuild();
 
 }());
