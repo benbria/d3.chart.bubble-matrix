@@ -29,7 +29,7 @@ module.exports = function(grunt) {
             },
             livereload: {
                 options: {livereload: true},
-                files: ['dist/*.{js,css}']
+                files: ['dist/*.{js,css}', 'example/**/*.{html,js,css}']
             }
         },
         jshint: {
