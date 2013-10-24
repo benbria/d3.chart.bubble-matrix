@@ -92,8 +92,8 @@ of assumptions about how is organized your data. However, you can customize a
 lot data organization with the provided interface.
 
 To play with the example in live, clone the repo, grab the packages `npm
-install`, run `grunt dev` and go to http://localhost:8000/. See also
-[CONTRIBUTING](CONTRIBUTING.md).
+install`, run `grunt dev` and go to [localhost:8000](http://localhost:8000/).
+See also [CONTRIBUTING](CONTRIBUTING.md).
 
 ## API
 

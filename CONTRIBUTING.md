@@ -12,8 +12,8 @@ You need to install `grunt-cli` to develop, generally globally. Then run
   * or, `grunt dev` will watch your files and recompile on changes.
 
 The last solution is useful for development. You can open your browser at
-http://localhost:8000/, play with the example and see your changes along the
-way.
+[localhost:8000](http://localhost:8000/), play with the example and see your
+changes along the way.
 
 The chart itself is written in [LiveScript](http://livescript.net/), pretty
 similar to CoffeeScript.
