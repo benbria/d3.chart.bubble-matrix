@@ -105,7 +105,6 @@
             options.dayHours = document.getElementById('day-hours').value.split(',');
             options.dayHours[0] = +options.dayHours[0]
             options.dayHours[1] = +options.dayHours[1]
-            console.log(options.dayHours);
             refilter();
     });
 
