@@ -4,6 +4,32 @@ A bubble-matrix chart, working on any kind of bidimensional data.
 
 ![bubble matrix](doc/screenshot.png)
 
+Features:
+
+  * useful to represent data on two dimensions, each datum being able to
+    have two specific traits represented by size and color;
+  * based on the powerful [Data-Driven Documents](http://d3js.org/) library;
+  * based on the [d3.chart](http://misoproject.com/d3-chart/) abstraction,
+    making the chart fairly flexible;
+  * can dynamically change data, keeping track or removed/added rows and
+    columns and animating headers & bubbles.
+
+## Install
+
+The library is not on `bower` yet, because `d3.chart` is not itself registered.
+This should happen soon. Meanwhile, you can directly download the [compiled
+library](https://github.com/benbria/d3.chart.bubble-matrix.shim/archive/master.zip).
+
+The following files are available:
+
+  * `d3.chart.bubble-matrix.js` — non-minified, development version;
+  * `d3.chart.bubble-matrix.min.js` — production version;
+  * `d3.chart.bubble-matrix.css` — mandatory CSS;
+  * `d3.chart.bubble-matrix.default.css` — theme CSS.
+
+If you want to customize the chart appearance, you can skip the theme CSS
+and style the items yourself.
+
 ## Sample Use
 
 We assume `d3`, `lodash`, `d3.chart` and `d3.chart.base` libraries files are in
@@ -226,7 +252,7 @@ The value `base` in the chart is the root d3 selection, generally the SVG.
   * Tested on Chrome 30, Firefox 22 and IE10;
   * does not resize the headers font, if the chart is dynamically resized to be
     tiny, it won't be very good (but you can change the font with CSS);
-  * does not support -- yet -- slanted headers;
+  * does not support — yet — slanted headers;
   * animations can become slow if you have a lot of bubbles displayed.
 
 Please, feel free to open pull requests to make any change.
