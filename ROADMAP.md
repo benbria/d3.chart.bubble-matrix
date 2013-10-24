@@ -1,7 +1,9 @@
 # Roadmap
 
-  * Make headers more flexible (rotation, etc.) while keeping simplicity
-    of implementation;
-  * bind keys to columns (useful or not?);
-  * publish on `bower` once `d3.chart` is itself published;
-  * add a proper test suite.
+  * add support for slanted headers (especially for columns) while keeping
+    simplicity of implementation;
+  * add a proper test suite;
+  * try to improve performance with a lot of bubbles (allowing disabling
+    move animations, maybe? or disable by ourselves when we see that
+    columns or rows did not change, only bubble data);
+  * publish on `bower` once `d3.chart` is itself published.

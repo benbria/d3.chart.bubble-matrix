@@ -47,7 +47,7 @@ bubble-exit = (sel, chart) ->
 bubble-merge-transition = (sel, chart) ->
     @attr \opacity, 1
     @attr \cx, (d, i) -> chart.x-scale_ i
-    @attr \r, (d) -> chart.radius-scale_ (chart.radius_ d)
+    @attr \r, (d) -> chart.radius-scale_ (chart.size_ d)
     @attr \fill, (d) -> chart.color-scale_ (chart.color_ d)
 
 transform-row = (sel, chart) ->

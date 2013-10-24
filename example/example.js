@@ -43,9 +43,9 @@
 
     // Set up the bubbles.
     //
-    chart.radius(function (d) { return d.volume; })
-          .color(function (d) { return d.positivity; })
-          .colorScale(utils.nullableScale('#ddd', colorScale))
+    chart.size(function (d) { return d.volume; })
+         .color(function (d) { return d.positivity; })
+         .colorScale(utils.nullableScale('#ddd', colorScale))
 
     // The margin is the space allocated for row headers at the left. We can
     // listen to its change and move the chart so that bubble threads are

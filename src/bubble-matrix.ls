@@ -11,6 +11,8 @@ const VT_PADDING = 1.0
 # Relative padding between the bubbles.
 const RADIUS_PADDING = 0.1
 
+# Based on the color specifications of Cynthia Brewer
+# (http://colorbrewer.org/). Namely, the RdBu with 9 items.
 const DEFAULT_PALETTE = <[ #b2182b #d6604d #f4a582 #fddbc7 #f7f7f7
                            #d1e5f0 #92c5de #4393c3 #2166ac ]>
 
@@ -46,7 +48,7 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
         @row-data_ or @row-data -> it.values
         @column_ or @columns -> it.columns
         @col-header_ or @col-header -> it
-        @radius_ or @radius -> it[0]
+        @size_ or @size -> it[0]
         @color_ or @color -> it[1]
         @color-scale_ or @color-scale defaultColorScale!
         @slanted_ or @slanted false
@@ -112,25 +114,25 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
     # Settings that affect the way row information is retrieved.
     #
     rows:           makeProp \rows_
-    row-key:        makeProp \rowKey_
     row-header:     makeProp \rowHeader_
+    row-key:        makeProp \rowKey_
     row-data:       makeProp \rowData_
 
     # Settings that affect the way column information is retrieved.
     #
     columns:        makeProp \columns_
-    col-key:        makeProp \colKey_
     col-header:     makeProp \colHeader_
+    col-key:        makeProp \colKey_
 
     # Settings that affect the way bubble information is retrieved.
     #
-    radius:         makeProp \radius_
+    size:           makeProp \size_
     color:          makeProp \color_
 
     # Set the input domain for bubble radiuses. The range is automatically
     # determined by the chart depending on the available space.
     #
-    radius-domain:  makeProp \radiusDomain_, ->
+    size-domain:  makeProp \sizeDomain_, ->
         @radius-scale_.domain it
 
     # Set the color scale for bubbles.
@@ -138,5 +140,7 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
     color-scale:    makeProp \colorScale_
 
     # Enable slanted column labels.
+    #
+    # FIXME: very experimental, need to improve the feature.
     #
     slanted:        makeProp \slanted_
