@@ -30,4 +30,4 @@ exports.text-ruler = (svgSel) ->
     ruler.onTmpText = onTmpText
     ruler
 
-window.text-ruler = exports.text-ruler
+exports.layers = {}

@@ -15,55 +15,68 @@ const COL_HEADER_PADDING = 0.06
 # Relative padding between the bubbles.
 const RADIUS_PADDING = 0.1
 
+const DEFAULT_PALETTE = <[ #b2182b #d6604d #f4a582 #fddbc7 #f7f7f7
+                           #d1e5f0 #92c5de #4393c3 #2166ac ]>
+
+defaultColorScale = ->
+    d3.scale.quantize!domain [0,1]
+      .range DEFAULT_PALETTE
+
 # Declare the chart.
 #
 exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
     # Do the first-time setting. Notably:
     #
     #   * creating scales and internal variables;
-    #   * creating layers and their base groups;
-    #   * registering to size change events.
+    #   * creating layers and their base groups.
     #
     initialize: ->
+        @load-defaults_!
         @base.classed \d3-chart-bubble-matrix, true
         @x-scale_ = d3.scale.ordinal!
         @y-scale_ = d3.scale.ordinal!
         @radius-scale_ = d3.scale.sqrt!
         @left-margin_ = 0
-        @slanted_ or @slanted false
-        @swoop_ or @swoop false
         @ruler_ = exports.text-ruler @base
-        thread-gr = @base.append \g .classed \thread, true
-        bubble-gr = @base.append \g .classed \bubble, true
-        row-header-gr = @base.append \g .classed \row-header, true
-        col-header-gr = @base.append \g .classed \col-header, true
-        @layer \thread, thread-gr, exports.thread-options
-        @layer \bubble, bubble-gr, exports.bubble-options
-        @layer \row-header, row-header-gr, exports.row-header-options
-        @layer \col-header, col-header-gr, exports.col-header-options
+        for layer in <[ thread bubble row-header col-header ]>
+            gr = @base.append \g .classed layer, true
+            @layer layer, gr, exports.layers[layer]
+
+    # Load default values for the chart parameters.
+    #
+    load-defaults_: ->
+        @rows_ or @rows -> it.rows
+        @row-header_ or @row-header -> it.name
+        @row-data_ or @row-data -> it.values
+        @column_ or @columns -> it.columns
+        @col-header_ or @col-header -> it
+        @radius_ or @radius -> it[0]
+        @color_ or @color -> it[1]
+        @color-scale_ or @color-scale defaultColorScale!
+        @slanted_ or @slanted false
 
     # Do the initial data processing. Update the X and Y scale domains
     # according with the data length, and update the radius scale depending on
     # the available space.
     #
     transform: (data) ->
-        row-count = data.length
-        col-count = (@row-data_ data[0]).length
-        left = @update-left-margin_ data, @width!
-        bottom = @get-max-bottom_ data[0], @height!
-        x-delta = (@width! - left) / col-count
-        y-delta = (bottom - 0) / row-count
-        @x-scale_.domain d3.range 0, col-count
-        @y-scale_.domain d3.range 0, row-count
+        rows = @rows_ data
+        cols = @columns_ data
+        left = @update-left-margin_ rows, @width!
+        bottom = @get-max-bottom_ cols, @height!
+        x-delta = (@width! - left) / cols.length
+        y-delta = (bottom - 0) / rows.length
+        @x-scale_.domain d3.range 0, cols.length
+        @y-scale_.domain d3.range 0, rows.length
         delta = x-delta <? y-delta
-        right = left + delta * col-count
-        bottom = delta * row-count
+        right = left + delta * cols.length
+        bottom = delta * rows.length
         @x-scale_.rangePoints [left, right], HZ_PADDING
         @y-scale_.rangePoints [0, bottom], VT_PADDING
         @bottom-margin_ = bottom + COL_HEADER_PADDING * @height!
         delta = (@x-scale_ 1) - (@x-scale_ 0)
         @radius-scale_.range [0, delta * (1-RADIUS_PADDING) / 2]
-        data
+        {rows, cols}
 
     # Update the left margin, and return the left position of the available
     # space to draw the chart bubbles.
@@ -97,13 +110,23 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
     #      be replaced by misoproject/d3.chart#26 eventually. See also issue
     #      misoproject/d3.chart#22.
     #
+    # Settings that affect the way row information is retrieved.
+    #
+    rows:           makeProp \rows_
     row-key:        makeProp \rowKey_
     row-header:     makeProp \rowHeader_
     row-data:       makeProp \rowData_
+
+    # Settings that affect the way column information is retrieved.
+    #
+    columns:        makeProp \columns_
+    col-key:        makeProp \colKey_
     col-header:     makeProp \colHeader_
+
+    # Settings that affect the way bubble information is retrieved.
+    #
     radius:         makeProp \radius_
     color:          makeProp \color_
-    swoop:          makeProp \swoop_
 
     # Set the input domain for bubble radiuses. The range is automatically
     # determined by the chart depending on the available space.

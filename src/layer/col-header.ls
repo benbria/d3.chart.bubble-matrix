@@ -7,8 +7,7 @@ o = {events: {}}
 #
 o.data-bind = (data) ->
     chart = @chart!
-    col-data = [chart.col-header_ i for i in chart.x-scale_.domain!]
-    @select-all \text .data col-data
+    @select-all \text .data data.cols, chart.col-key_
 
 # Insert a text for each column.
 #
@@ -31,7 +30,7 @@ o.events[\enter] = ->
 #
 o.events[\merge] = ->
     chart = @chart!
-    @text (d) -> d
+    @text chart.col-header_
 
 o.events[\enter:transition] = ->
     @attr \opacity 1
@@ -45,4 +44,4 @@ o.events[\update:transition] = ->
 o.events[\exit] = ->
     @remove()
 
-exports.col-header-options = o
+exports.layers[\col-header] = o

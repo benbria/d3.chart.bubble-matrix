@@ -9,7 +9,7 @@ const STROKE_WIDTH = 0.15
 #
 o.data-bind = (data) ->
     chart = @chart!
-    @select-all \g.row .data data, chart.row-key_
+    @select-all \g.row .data data.rows, chart.row-key_
 
 # Insert groups for each bubble row.
 #
@@ -44,9 +44,6 @@ bubble-exit = (sel, chart) ->
 bubble-merge-transition = (sel, chart) ->
     @attr \opacity, 1
     @attr \cx, (d, i) -> chart.x-scale_ i
-    if chart.swoop_
-        @duration 200
-        @delay (d, i, j) -> i*5+j*10
     @attr \r, (d) -> chart.radius-scale_ (chart.radius_ d)
     @attr \fill, (d) -> chart.color-scale_ (chart.color_ d)
 
@@ -82,4 +79,4 @@ o.events[\update:transition] = ->
 o.events[\exit] = ->
     @remove()
 
-exports.bubble-options = o
+exports.layers[\bubble] = o

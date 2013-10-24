@@ -10,7 +10,7 @@ const TICK_HEIGHT = 1
 #
 o.data-bind = (data) ->
     chart = @chart!
-    @select-all \g.thread .data data, chart.row-key_
+    @select-all \g.thread .data data.rows, chart.row-key_
 
 # Insert groups for each thread.
 #
@@ -52,4 +52,4 @@ o.events[\update:transition] = ->
 o.events[\exit:transition] = ->
     @attr \opacity 0 .remove!
 
-exports.thread-options = o
+exports.layers[\thread] = o
