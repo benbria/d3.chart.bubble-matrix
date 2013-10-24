@@ -16,3 +16,9 @@ the `example/index.html` file and see your changes along the way.
 
 The chart is written in [LiveScript](http://livescript.net/), pretty similar
 to CoffeeScript.
+
+## Style Guide
+
+  * All files are `lower-case-dashed.foo`;
+  * 4-space indentation;
+  * 80 columns max.
