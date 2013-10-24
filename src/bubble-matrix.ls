@@ -7,10 +7,6 @@ makeProp = exports.makeProp
 #
 const HZ_PADDING = 1.0
 const VT_PADDING = 1.0
-const ROW_HEADER_MARGIN = 0.15
-const COL_HEADER_MARGIN = 0.1
-const ROW_HEADER_PADDING = 0.01
-const COL_HEADER_PADDING = 0.06
 
 # Relative padding between the bubbles.
 const RADIUS_PADDING = 0.1
@@ -73,7 +69,8 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
         bottom = delta * rows.length
         @x-scale_.rangePoints [left, right], HZ_PADDING
         @y-scale_.rangePoints [0, bottom], VT_PADDING
-        @bottom-margin_ = bottom + COL_HEADER_PADDING * @height!
+        padding = (@ruler_.extentOfChar 'W' .height)
+        @bottom-margin_ = bottom + padding * 1.3
         delta = (@x-scale_ 1) - (@x-scale_ 0)
         @radius-scale_.range [0, delta * (1-RADIUS_PADDING) / 2]
         {rows, cols}
@@ -91,11 +88,13 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
     #
     update-left-margin_: (data, width) ->
         left-margin = @left-margin_
-        @left-margin_ = ld.reduce data, (r, d) ~>
+        @row-header-left_ = ld.reduce data, (r, d) ~>
             r >? @ruler_ (@row-header_ d)
-        @left-margin_ += ROW_HEADER_MARGIN * width
+        padding = (@ruler_.extentOfChar 'W' .width)
+        @row-header-left_ += padding
+        @left-margin_ = @row-header-left_ + padding
         @trigger 'margin', @left-margin_ if @left-margin_ != left-margin
-        @left-margin_ + ROW_HEADER_PADDING * width
+        @left-margin_ + (@ruler_.extentOfChar 'W' .width)
 
     # Get the maximum acceptable bottom position of the available
     # space to draw the chart bubbles.

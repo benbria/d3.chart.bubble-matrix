@@ -2,8 +2,6 @@
 #
 o = {events: {}}
 
-const ROW_HEADER_PADDING = 0.01
-
 # Bind data to the header.
 #
 o.data-bind = (data) ->
@@ -19,7 +17,7 @@ o.insert = ->
 
 transform-row = (sel, chart) ->
     width = chart.width!
-    left = chart.left-margin_ - ROW_HEADER_PADDING * width
+    left = chart.row-header-left_
     @attr \transform, (d, i) ->
         "translate(#left,#{chart.y-scale_ i})"
 
