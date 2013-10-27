@@ -11,7 +11,7 @@ o.data-bind = (data) ->
     chart = @chart!
     if chart.col-key_
         chart.bubble-key_ = (d, i) ->
-            chart.col-key_ data.cols[i]
+            chart.col-key_ data.cols[i], i
     else
         chart.bubble-key_ = undefined
     @select-all \g.row .data data.rows, chart.row-key_
@@ -80,12 +80,12 @@ o.events[\enter] = ->
 o.events[\merge] = ->
     chart = @chart!
     if chart.bubble-key_?
-        key = (d, i) ->
+        key = ->
             if this instanceof Array
-                return chart.bubble-key_ d, i
+                return chart.bubble-key_ ...
             @__key__
     bubbles = @select-all \circle
-              .data ((d) -> chart.row-data_ d), key
+              .data chart.row-data_, key
     bubbles.enter!append \circle
            .call bubble-enter, chart
     bubbles.exit!call bubble-exit, chart
