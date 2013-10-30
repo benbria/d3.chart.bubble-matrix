@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "dependencies": {
     "d3": "~3.3.8",
+    "d3.chart": "0.1.3",
+    "d3.chart.base": "0.4.0",
     "lodash": "~2.2.1"
+  },
+  "devDependencies": {
+    "colorbrewer": "1.0.0"
   }
 }
