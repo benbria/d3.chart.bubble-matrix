@@ -23,7 +23,7 @@ bower install d3.chart.bubble-matrix
 ```
 
 This will install the library, as well as its dependencies. You must include
-those in your HTML: `d3`, `d3.chart`, `d3.chart.base`.
+those in your HTML: `lodash`, `d3`, `d3.chart`, `d3.chart.base`.
 
 Otherwise, you can directly download the [compiled
 library](https://github.com/benbria/d3.chart.bubble-matrix.shim/archive/master.zip).
