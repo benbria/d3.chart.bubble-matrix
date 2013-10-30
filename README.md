@@ -16,11 +16,19 @@ Features:
 
 ## Install
 
-The library is not on `bower` yet, because `d3.chart` is not itself registered.
-This should happen soon. Meanwhile, you can directly download the [compiled
+With [bower](https://github.com/bower/bower):
+
+```sh
+bower install d3.chart.bubble-matrix
+```
+
+This will install the library, as well as its dependencies. You must include
+those in your HTML: `d3`, `d3.chart`, `d3.chart.base`.
+
+Otherwise, you can directly download the [compiled
 library](https://github.com/benbria/d3.chart.bubble-matrix.shim/archive/master.zip).
 
-The following files are available:
+The following files are available in the package:
 
   * `d3.chart.bubble-matrix.js` — non-minified, development version;
   * `d3.chart.bubble-matrix.min.js` — production version;
@@ -33,7 +41,8 @@ and style the items yourself.
 ## Sample Use
 
 We assume `d3`, `lodash`, `d3.chart` and `d3.chart.base` libraries files are in
-the same directory as the example.
+the same directory as the example (they'll be located in the
+`bower_components` folder when installed via `bower`).
 
 ```html
 <!-- index.html -->
