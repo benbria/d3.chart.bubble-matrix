@@ -7,7 +7,7 @@ exports.makeProp = (name, fn) ->
     (it) ->
         return this[name] unless it?
         this[name] = it
-        fn(it) if fn?
+        fn.call(this, it) if fn?
         this
 
 # Create a text-measuring function in the specified SVG context. `svgSel`
