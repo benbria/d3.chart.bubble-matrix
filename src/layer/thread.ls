@@ -32,7 +32,7 @@ o.events[\merge] = ->
     chart = @chart!
     range = chart.x-scale_.range()
     left = chart.left-margin_
-    tick-height = TICK_HEIGHT * chart.radius-scale_ 1
+    tick-height = TICK_HEIGHT * chart.max-radius_
     path = "M #{left} -#{tick-height/2} v #{tick-height}"
     path += "M #{left} 0 H #{range[range.length-1]}"
     @select \path .attr \d, path

@@ -74,7 +74,8 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
         padding = (@ruler_.extentOfChar 'W' .height)
         @bottom-margin_ = bottom + padding * 1.3
         delta = (@x-scale_ 1) - (@x-scale_ 0)
-        @radius-scale_.range [0, delta * (1-RADIUS_PADDING) / 2]
+        @max-radius_ = delta * (1-RADIUS_PADDING) / 2
+        @radius-scale_.range [0, @max-radius_]
         {rows, cols}
 
     # Update the left margin, and return the left position of the available

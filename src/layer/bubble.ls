@@ -35,7 +35,7 @@ bubble-enter = (sel, chart) ->
 # and have the correct white spacing around.
 #
 bubble-merge = (sel, chart) ->
-    @attr \stroke-width, STROKE_WIDTH * chart.radius-scale_ 1
+    @attr \stroke-width, STROKE_WIDTH * chart.max-radius_
 
 # Remove bubbles.
 #
