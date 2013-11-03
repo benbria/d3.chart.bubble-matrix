@@ -63,10 +63,8 @@
     // get the color defined by CSS.
     //
     chart.layer('col-header').on('enter', function() {
-        this.style('fill', function(d, i) {
-            if (i > 6 && i < 20)
-                return null;
-            return '#ccc';
+        this.classed('night', function(d) {
+            return !(d > 6 && d < 20);
         });
     });
 
