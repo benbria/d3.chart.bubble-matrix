@@ -8,3 +8,4 @@
     columns or rows did not change, only bubble data);
   * publish on `bower` once `d3.chart` is itself published;
   * minify the CSS? useful or not, given most people minify themselves?
+  * make sure AMD is working (and add a test for it).

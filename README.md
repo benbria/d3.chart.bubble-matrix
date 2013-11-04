@@ -262,7 +262,9 @@ The value `base` in the chart is the root d3 selection, generally the SVG.
   * does not resize the headers font, if the chart is dynamically resized to be
     tiny, it won't be very good (but you can change the font with CSS);
   * does not support — yet — slanted headers;
-  * animations can become slow if you have a lot of bubbles displayed.
+  * animations can become slow if you have a lot of bubbles displayed;
+  * Async. Module Definition is implemented but have not been tested —
+    properly supporting and testing it is in the roadmap.
 
 Please, feel free to open pull requests to make any change.
 See [CONTRIBUTING](CONTRIBUTING.md).

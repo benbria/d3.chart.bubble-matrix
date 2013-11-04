@@ -116,17 +116,41 @@ module.exports = function(grunt) {
                     livereload: true
                 }
             }
+        },
+        karma: {
+            // TODO(undashes): add test coverage. Last time I tried with plugin
+            //                 karma-coverage, it was doing nothing visible...
+            options: {
+                basePath: '.',
+                reporters: 'progress',
+                frameworks: ['mocha', 'sinon-chai'],
+                files: [
+                    'bower_components/d3/d3.js',
+                    'bower_components/d3.chart/d3.chart.js',
+                    'bower_components/d3.chart.base/d3.chart.base.js',
+                    'bower_components/lodash/dist/lodash.js',
+                    'dist/d3.chart.<%= meta.chartName %>.{css,js,default.css}',
+                    'test/util.js',
+                    'test/*.spec.js'
+                ],
+                port: 9876,
+                captureTimeout: 20000,
+                reportSlowerThan: 500
+            },
+            ci: {
+                // XXX: does not work with PhantomJS because
+                //      Function.prototype.bind is not implemented.
+                //      See https://github.com/ariya/phantomjs/issues/10522
+                browsers: ['Firefox'],
+                singleRun: true
+            },
+            dev: {
+                browsers: ['Chrome'],
+                autoWatch: true
+                // background: true,
+            }
         }
     });
-
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-stylus');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-connect');
-    grunt.loadNpmTasks('grunt-livescript');
 
     grunt.registerTask('build', [
         'livescript', 'concat', 'stylus'
@@ -139,5 +163,16 @@ module.exports = function(grunt) {
     grunt.registerTask('dev', [
         'build', 'connect', 'watch'
     ]);
+
     grunt.registerTask('default', 'dist');
+
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-stylus');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-livescript');
 };
