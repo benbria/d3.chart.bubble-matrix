@@ -1,3 +1,6 @@
+// We should use `grunt-umd` instead of this explicit intro, but the tool does
+// not camelize lib names containing '.' or '-', making the generated JS
+// invalid; needs a pull request.
 (function(mod) {
     // CommonJS, Node.js, browserify.
     if (typeof exports === "object" && typeof module === "object") {
