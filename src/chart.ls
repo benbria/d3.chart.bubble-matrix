@@ -5,6 +5,10 @@ makeProp = exports.makeProp
 
 # Constants.
 #
+const CHART_NAME = \BubbleMatrix
+const CHART_ID = \d3-chart-bubble-matrix
+
+# Padding, horizontal and vertical, for bubbles columns and rows.
 const HZ_PADDING = 1.0
 const VT_PADDING = 1.0
 
@@ -22,7 +26,7 @@ defaultColorScale = ->
 
 # Declare the chart.
 #
-exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
+exports.Chart = d3.chart \BaseChart .extend CHART_NAME,
     # Do the first-time setting. Notably:
     #
     #   * creating scales and internal variables;
@@ -30,7 +34,7 @@ exports.bubble-matrix = d3.chart \BaseChart .extend \BubbleMatrix,
     #
     initialize: ->
         @load-defaults_!
-        @base.classed \d3-chart-bubble-matrix, true
+        @base.classed CHART_ID, true
         @x-scale_ = d3.scale.ordinal!
         @y-scale_ = d3.scale.ordinal!
         @radius-scale_ = d3.scale.sqrt!

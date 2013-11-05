@@ -1,2 +1,2 @@
-    return exports.bubbleMatrix;
+    return exports;
 });
