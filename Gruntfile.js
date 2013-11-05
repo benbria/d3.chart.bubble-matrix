@@ -12,7 +12,8 @@ module.exports = function(grunt) {
                 '.build/chart.js',
                 'src/meta/outro.js'
             ],
-            chartName: 'bubble-matrix'
+            chartName: 'bubble-matrix',
+            chartJSName: 'd3ChartBubbleMatrix'
         },
         watch: {
             scripts: {
@@ -127,12 +128,16 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-livescript');
 
+    grunt.registerTask('build', [
+        'livescript', 'concat', 'stylus'
+    ]);
+
     grunt.registerTask('dist', [
-        'jshint', 'livescript', 'concat', 'uglify', 'stylus', 'copy'
+        'jshint', 'build', 'uglify', 'copy'
     ]);
 
     grunt.registerTask('dev', [
-        'livescript', 'concat', 'stylus', 'connect', 'watch'
+        'build', 'connect', 'watch'
     ]);
     grunt.registerTask('default', 'dist');
 };
