@@ -145,7 +145,7 @@ module.exports = function(grunt) {
                 singleRun: true
             },
             dev: {
-                browsers: ['Chrome'],
+                browsers: ['Chrome', 'Firefox'],
                 autoWatch: true
                 // background: true,
             }

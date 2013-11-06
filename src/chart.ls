@@ -56,6 +56,7 @@ exports.Chart = d3.chart \BaseChart .extend CHART_NAME,
         @color_ or @color -> it[1]
         @color-scale_ or @color-scale defaultColorScale!
         @slanted_ or @slanted false
+        @duration_ or @duration 250
 
     # Do the initial data processing. Update the X and Y scale domains
     # according with the data length, and update the radius scale depending on
@@ -149,3 +150,7 @@ exports.Chart = d3.chart \BaseChart .extend CHART_NAME,
     # FIXME: very experimental, need to improve the feature.
     #
     slanted:        makeProp \slanted_
+
+    # Set the duration of all chart transitions.
+    #
+    duration:       makeProp \duration_

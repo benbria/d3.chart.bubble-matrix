@@ -45,6 +45,7 @@ bubble-exit = (sel, chart) ->
 # Transition the bubbles to their final radius and color, according with data.
 #
 bubble-merge-transition = (sel, chart) ->
+    @duration chart.duration_
     @attr \opacity, 1
     @attr \cx, (d, i) -> chart.x-scale_ i
     @attr \r, (d) -> chart.radius-scale_ (chart.size_ d)
@@ -97,6 +98,7 @@ o.events[\merge] = ->
 
 o.events[\update:transition] = ->
     chart = @chart!
+    @duration chart.duration_
     @call transform-row, chart
 
 # Remove exiting rows.

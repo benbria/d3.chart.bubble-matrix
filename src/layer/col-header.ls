@@ -33,10 +33,13 @@ o.events[\merge] = ->
     @text chart.col-header_
 
 o.events[\enter:transition] = ->
+    chart = @chart!
+    @duration chart.duration_
     @attr \opacity 1
 
 o.events[\update:transition] = ->
     chart = @chart!
+    @duration chart.duration_
     @call transform-col, chart
 
 # Just remove exiting columns.

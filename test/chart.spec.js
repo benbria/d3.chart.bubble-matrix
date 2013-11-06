@@ -11,7 +11,7 @@ function checkHeadersDelayed(selector, dataset, headerFn, innerFn, cb) {
     setTimeout(function() {
         checkHeaders(selector, dataset, headerFn, innerFn);
         cb();
-    }, 300);
+    }, 25);
 }
 
 function getRows(dataset) { return dataset.rows; }
@@ -19,20 +19,20 @@ function getColumns(dataset) { return dataset.columns; }
 function getName(datum) { return datum.name; }
 function identity(datum) { return datum; }
 
-describe('bubble-matrix', function() {
-    var chart;
+describe('chart', function() {
+    var svg, chart;
 
     function init() {
-        chart = d3.select('body').append('svg')
-                  .chart('BubbleMatrix')
-                  .width(200).height(200);
+        svg = d3.select('body').append('svg');
+        chart = svg.chart('BubbleMatrix')
+                   .width(200).height(200).duration(0);
     }
 
     // The added delay is necessary to obtain "consistent" success, at
     // least on Chrome. Without, it sometime fails, maybe because the browser
     // it not completely ready.
     //
-    // TODO: report this issue on Karma tracker?
+    // TODO(undashes): report this issue on Karma tracker?
     before(function(cb) {
         setTimeout(function() {
             if (document.readyState === "complete") {
@@ -44,6 +44,10 @@ describe('bubble-matrix', function() {
                 cb();
             }, false);
         }, 500);
+    });
+
+    after(function() {
+        svg.remove();
     });
 
     describe('row headers', function() {

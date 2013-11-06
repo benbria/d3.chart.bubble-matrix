@@ -33,17 +33,22 @@ o.events[\merge] = ->
 
 # Fade-in an entering header.
 o.events[\enter:transition] = ->
+    chart = @chart!
+    @duration chart.duration_
     @attr \opacity, 1
 
 # Move smoothly the header to its new location.
 #
 o.events[\update:transition] = ->
     chart = @chart!
+    @duration chart.duration_
     @call transform-row, chart
 
 # Make the exiting header disappear smoothly.
 #
 o.events[\exit:transition] = ->
+    chart = @chart!
+    @duration chart.duration_
     @attr \opacity 0 .remove!
 
 # Just remove exiting headers.
