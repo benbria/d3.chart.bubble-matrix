@@ -13,8 +13,8 @@ exports.makeProp = (name, fn) ->
 # Create a text-measuring function in the specified SVG context. `svgSel`
 # must a d3.js selection on an SVG root or child element.
 #
-# TODO(undashes): extract this as a separate module, as it can be helpful
-#                 for other charts.
+# TODO(jeanlauliac): extract this as a separate module, as it can be helpful
+# for other charts.
 #
 exports.text-ruler = (svgSel) ->
     onTmpText = (str, fn) ->

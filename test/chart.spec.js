@@ -51,7 +51,7 @@ describe('chart', function() {
     // it not completely ready. Firefox seems not to have the problem at all.
     // The delay of 500 is completely arbitrary.
     //
-    // TODO(undashes): report this issue on Karma tracker?
+    // TODO(jeanlauliac): report this issue on Karma tracker?
     //
     before(function(cb) {
         setTimeout(function() {

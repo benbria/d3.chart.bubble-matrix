@@ -119,7 +119,7 @@ module.exports = function(grunt) {
         },
         karma: {
             // TODO(undashes): add test coverage. Last time I tried with plugin
-            //                 karma-coverage, it was doing nothing visible...
+            // karma-coverage, it was doing nothing visible...
             options: {
                 basePath: '.',
                 reporters: 'progress',
@@ -138,9 +138,9 @@ module.exports = function(grunt) {
                 reportSlowerThan: 500
             },
             ci: {
-                // XXX: does not work with PhantomJS because
-                //      Function.prototype.bind is not implemented.
-                //      See https://github.com/ariya/phantomjs/issues/10522
+                // XXX(jeanlauliac): does not work with PhantomJS because
+                // Function.prototype.bind is not implemented. See
+                // https://github.com/ariya/phantomjs/issues/10522
                 browsers: ['Firefox'],
                 singleRun: true
             },

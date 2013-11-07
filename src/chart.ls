@@ -112,10 +112,10 @@ exports.Chart = d3.chart \BaseChart .extend CHART_NAME,
     get-max-bottom_: (data, height) ->
         height - 2 * (@ruler_.extentOfChar 'W' .height)
 
-    # XXX: those are functions that let the graph extract the correct
-    #      information from the data, but it's not very satisfying. This may
-    #      be replaced by misoproject/d3.chart#26 eventually. See also issue
-    #      misoproject/d3.chart#22.
+    # XXX(jeanlauliac): those are functions that let the graph extract the
+    # correct information from the data, but it's not very satisfying. This may
+    # be replaced by misoproject/d3.chart#26 eventually. See also issue
+    # misoproject/d3.chart#22.
     #
     # Settings that affect the way row information is retrieved.
     #
@@ -147,7 +147,7 @@ exports.Chart = d3.chart \BaseChart .extend CHART_NAME,
 
     # Enable slanted column labels.
     #
-    # FIXME: very experimental, need to improve the feature.
+    # FIXME(jeanlauliac): very experimental, need to improve the feature.
     #
     slanted:        makeProp \slanted_
 
