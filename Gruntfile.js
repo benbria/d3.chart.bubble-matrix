@@ -130,7 +130,7 @@ module.exports = function(grunt) {
                     'bower_components/d3.chart.base/d3.chart.base.js',
                     'bower_components/lodash/dist/lodash.js',
                     'dist/d3.chart.<%= meta.chartName %>.{css,js,default.css}',
-                    'test/util.js',
+                    'test/data.js',
                     'test/*.spec.js'
                 ],
                 port: 9876,
