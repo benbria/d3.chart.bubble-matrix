@@ -2,7 +2,7 @@
   "name": "d3.chart.bubble-matrix",
   "version": "0.1.2",
   "dependencies": {
-    "d3": ">= 3.3 < 4",
+    "d3": "3.x",
     "d3.chart": "0.1.x",
     "d3.chart.base": "0.4.x",
     "lodash": "2.x"
