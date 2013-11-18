@@ -1,6 +1,13 @@
 {
   "name": "d3.chart.bubble-matrix",
   "version": "0.1.2",
+  "keywords": [
+    "d3.js",
+    "visualization",
+    "chart",
+    "bubble",
+    "matrix"
+  ],
   "dependencies": {
     "d3": "3.x",
     "d3.chart": "0.1.x",
@@ -9,5 +16,8 @@
   },
   "devDependencies": {
     "colorbrewer": "1.x"
-  }
+  },
+  "license": "MIT Expat",
+  "main": "d3.chart.bubble-matrix.js",
+  "homepage": "https://github.com/benbria/d3.chart.bubble-matrix"
 }
