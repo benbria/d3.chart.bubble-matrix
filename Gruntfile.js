@@ -17,8 +17,8 @@ module.exports = function(grunt) {
         },
         watch: {
             scripts: {
-                files: ['src/**/*.{js,ls}'],
-                tasks: ['livescript', 'concat']
+                files: ['src/**/*.{js,coffee}'],
+                tasks: ['coffee', 'concat']
             },
             style: {
                 files: ['src/style/**/*.styl'],
@@ -53,6 +53,17 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: 'src',
                     src: '**/*.ls',
+                    dest: '.build',
+                    ext: '.js'
+                }]
+            }
+        },
+        coffee: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: 'src',
+                    src: '**/*.coffee',
                     dest: '.build',
                     ext: '.js'
                 }]
@@ -153,7 +164,7 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('build', [
-        'livescript', 'concat', 'stylus'
+        'coffee', 'concat', 'stylus'
     ]);
 
     grunt.registerTask('dist', [
@@ -167,6 +178,7 @@ module.exports = function(grunt) {
     grunt.registerTask('default', 'dist');
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-coffee');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
@@ -174,5 +186,4 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-karma');
-    grunt.loadNpmTasks('grunt-livescript');
 };

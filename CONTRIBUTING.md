@@ -15,8 +15,6 @@ The last solution is useful for development. You can open your browser at
 [localhost:8000](http://localhost:8000/), play with the example and see your
 changes along the way.
 
-The chart itself is written in [LiveScript](http://livescript.net/), pretty
-similar to CoffeeScript.
-
-Sources are `lower-case-dashed.foo`, 4-space indented and try to wrap
-at 80 columns.
+The chart itself is written in [CoffeeScript](http://coffeescript.org/), but is
+always distributed as JavaScript. Sources are `lower-case-dashed.foo`, 4-space
+indented and try to wrap at 80 columns.

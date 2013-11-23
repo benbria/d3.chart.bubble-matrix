@@ -3,60 +3,60 @@
 o = {events: {}}
 
 # White-space amount around bubbles as a coef. of the maximum radius.
-const STROKE_WIDTH = 0.15
+STROKE_WIDTH = 0.15
 
 # Bind data to the bubble rows.
 #
-o.data-bind = (data) ->
-    chart = @chart!
-    if chart.col-key_
-        chart.bubble-key_ = (d, i) ->
-            chart.col-key_ data.cols[i], i
+o.dataBind = (data) ->
+    chart = @chart()
+    if chart.colKey_
+        chart.bubbleKey_ = (d, i) ->
+            chart.colKey_ data.cols[i], i
     else
-        chart.bubble-key_ = undefined
-    @select-all \g.row .data data.rows, chart.row-key_
+        chart.bubbleKey_ = undefined
+    @selectAll('g.row').data data.rows, chart.rowKey_
 
 # Insert groups for each bubble row.
 #
 o.insert = ->
-    chart = @chart!
-    @append \g .classed \row, true
+    chart = @chart()
+    @append('g').classed 'row', true
 
 # Make a bubble enter the chart. It starts at radius 0 and animate smoothly
 # to the final radius.
 #
-bubble-enter = (sel, chart) ->
-    @attr \r, 0
-    @attr \fill, (d) -> chart.color-scale_ (chart.color_ d)
-    @attr \opacity, 0
-    @attr \cx, (d, i) -> chart.x-scale_ i
+bubbleEnter = (sel, chart) ->
+    @attr 'r', 0
+    @attr 'fill', (d) -> chart.colorScale_ chart.color_(d)
+    @attr 'opacity', 0
+    @attr 'cx', (d, i) -> chart.xScale_ i
 
 # Make sure both entering and existing bubbles are at the correct location
 # and have the correct white spacing around.
 #
-bubble-merge = (sel, chart) ->
-    @attr \stroke-width, STROKE_WIDTH * chart.max-radius_
+bubbleMerge = (sel, chart) ->
+    @attr 'stroke-width', STROKE_WIDTH * chart.maxRadius_
 
 # Remove bubbles.
 #
-bubble-exit = (sel, chart) ->
+bubbleExit = (sel, chart) ->
     @remove()
 
 # Transition the bubbles to their final radius and color, according with data.
 #
-bubble-merge-transition = (sel, chart) ->
+bubbleMergeTransition = (sel, chart) ->
     @duration chart.duration_
-    @attr \opacity, 1
-    @attr \cx, (d, i) -> chart.x-scale_ i
-    @attr \r, (d) -> chart.radius-scale_ (chart.size_ d)
-    @attr \fill, (d) -> chart.color-scale_ (chart.color_ d)
+    @attr 'opacity', 1
+    @attr 'cx', (d, i) -> chart.xScale_ i
+    @attr 'r', (d) -> chart.radiusScale_ chart.size_(d)
+    @attr 'fill', (d) -> chart.colorScale_ chart.color_(d)
 
-transform-row = (sel, chart) ->
-    @attr \transform, (d, i) -> "translate(0,#{chart.y-scale_ i})"
+transformRow = (sel, chart) ->
+    @attr 'transform', (d, i) -> "translate(0,#{chart.yScale_ i})"
 
-o.events[\enter] = ->
-    chart = @chart!
-    @call transform-row, chart
+o.events['enter'] = ->
+    chart = @chart()
+    @call transformRow, chart
 
 # Ensure entering and exisiting rows are at the correct location, then
 # add/remove bubbles as necessary for each row.
@@ -78,32 +78,32 @@ o.events[\enter] = ->
 # See the behavior explanation on
 # https://github.com/mbostock/d3/wiki/Selections#wiki-data.
 #
-o.events[\merge] = ->
-    chart = @chart!
-    if chart.bubble-key_?
+o.events['merge'] = ->
+    chart = @chart()
+    if chart.bubbleKey_?
         key = ->
             if this instanceof Array
-                return chart.bubble-key_ ...
+                return chart.bubbleKey_.apply this, arguments
             @__key__
-    bubbles = @select-all \circle
-              .data chart.row-data_, key
-    bubbles.enter!append \circle
-           .call bubble-enter, chart
-    bubbles.exit!call bubble-exit, chart
-    bubbles.call bubble-merge, chart
+    bubbles = @selectAll('circle')
+                .data chart.rowData_, key
+    bubbles.enter().append('circle')
+           .call bubbleEnter, chart
+    bubbles.exit().call bubbleExit, chart
+    bubbles.call bubbleMerge, chart
     if key?
         bubbles.each (d, i) ->
-            @__key__ = chart.bubble-key_ d, i
-    bubbles.transition!call bubble-merge-transition, chart
+            @__key__ = chart.bubbleKey_ d, i
+    bubbles.transition().call bubbleMergeTransition, chart
 
-o.events[\update:transition] = ->
-    chart = @chart!
+o.events['update:transition'] = ->
+    chart = @chart()
     @duration chart.duration_
-    @call transform-row, chart
+    @call transformRow, chart
 
 # Remove exiting rows.
 #
-o.events[\exit] = ->
+o.events['exit'] = ->
     @remove()
 
-exports.layers[\bubble] = o
+exports.layers['bubble'] = o

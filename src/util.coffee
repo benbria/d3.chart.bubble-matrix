@@ -16,20 +16,20 @@ exports.makeProp = (name, fn) ->
 # TODO(jeanlauliac): extract this as a separate module, as it can be helpful
 # for other charts.
 #
-exports.text-ruler = (svgSel) ->
+exports.textRuler = (svgSel) ->
     onTmpText = (str, fn) ->
-        el = svgSel.append \text .text str
+        el = svgSel.append('text').text str
         result = fn el
-        el.remove!
+        el.remove()
         result
     ruler = ld.memoize (str) ->
-        onTmpText str, -> it.node!getComputedTextLength!
+        onTmpText str, (it) -> it.node().getComputedTextLength()
     ruler.extentOfChar = ld.memoize (char) ->
         if (char.length < 1)
             throw new Error 'char can\'t be empty'
         if (char.length > 1)
             throw new Error 'can get extent of a full string'
-        onTmpText char, -> it.node!getExtentOfChar 0
+        onTmpText char, (it) -> it.node().getExtentOfChar 0
     ruler.onTmpText = onTmpText
     ruler
 
