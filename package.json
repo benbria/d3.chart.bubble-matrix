@@ -34,14 +34,12 @@
     "grunt-contrib-watch": "~0.5.3",
     "grunt-contrib-stylus": "~0.9.0",
     "grunt-karma": "0.6.2",
-    "grunt-livescript": "0.5.1",
     "karma": "0.10.4",
     "karma-chrome-launcher": "0.1.0",
     "karma-firefox-launcher": "0.1.0",
     "karma-mocha": "0.1.0",
     "karma-phantomjs-launcher": "0.1.0",
-    "karma-sinon-chai": "0.1.1",
-    "LiveScript": "~1.2.0"
+    "karma-sinon-chai": "0.1.1"
   },
   "engines": {
     "node": ">= 0.8",
