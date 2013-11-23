@@ -168,7 +168,7 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('dist', [
-        'jshint', 'build', 'uglify', 'copy'
+        'jshint', 'build', 'uglify', 'copy', 'karma:ci'
     ]);
 
     grunt.registerTask('dev', [
