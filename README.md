@@ -2,6 +2,8 @@
 
 A bubble-matrix chart, working on any kind of bidimensional data.
 
+[![Build Status](https://travis-ci.org/benbria/d3.chart.bubble-matrix.png?branch=master)](https://travis-ci.org/benbria/d3.chart.bubble-matrix)
+
 ![bubble matrix](doc/screenshot.png)
 
 Features:
