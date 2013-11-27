@@ -98,7 +98,7 @@ exports.Chart = d3.chart('BaseChart').extend CHART_NAME,
     #
     updateLeftMargin_: (data, width) ->
         leftMargin = @leftMargin_
-        maxWidth = (r, d) => Math.max(r, @ruler_(@rowHeader_(d)))
+        maxWidth = (r, d, i) => Math.max(r, @ruler_(@rowHeader_(d, i)))
         @rowHeaderLeft_ = ld.reduce data, maxWidth, 0
         padding = @ruler_.extentOfChar('W').width
         @rowHeaderLeft_ += padding
