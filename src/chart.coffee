@@ -41,7 +41,6 @@ exports.Chart = d3.chart('BaseChart').extend CHART_NAME,
         @yScale_ = d3.scale.ordinal()
         @radiusScale_ = d3.scale.sqrt()
         @leftMargin_ = 0
-        @ruler_ = exports.textRuler @base
         for layer in ['thread', 'bubble', 'row-header', 'col-header']
             gr = @base.append('g').classed layer, true
             @layer layer, gr, exports.layers[layer]
@@ -65,6 +64,7 @@ exports.Chart = d3.chart('BaseChart').extend CHART_NAME,
     # the available space.
     #
     transform: (data) ->
+        @ruler_ = exports.textRuler @base
         rows = @rows_ data
         cols = @columns_ data
         left = @updateLeftMargin_ rows, @width()
