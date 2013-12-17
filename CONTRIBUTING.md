@@ -5,11 +5,13 @@ explaining what change you made & why.
 
 ## Development Environment
 
-You need [Grunt](http://gruntjs.com/) to develop (`npm install -g grunt-cli`).
-Run `npm install` to get the necessary packages, then:
+To get set up:
 
+  * `npm install -g grunt-cli` to get [Grunt](http://gruntjs.com/).
+  * `npm install` to install development dependencies.
+  * `./node_modules/.bin/bower install` to install bower libraries for unit tests.
   * `grunt` will build the files in `dist`, ready to be deployed;
-  * or, `grunt dev` will watch your files and recompile on changes.
+    or, `grunt dev` will watch your files and recompile on changes.
 
 The last solution is useful for development. You can open your browser at
 [localhost:8000](http://localhost:8000/), play with the example and see your
