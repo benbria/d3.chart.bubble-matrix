@@ -20,3 +20,7 @@ changes along the way.
 The chart itself is written in [CoffeeScript](http://coffeescript.org/), but is
 always distributed as JavaScript. Sources are `lower-case-dashed.foo`, 4-space
 indented and try to wrap at 80 columns.
+
+## Pushing a New Release
+
+Unlike many other projects, the compiled versions of d3.chart.bubble-matrix are not committed to this git repo, and are instead comitted to [d3.chart.bubble-matrix.shim)](https://github.com/benbria/d3.chart.bubble-matrix.shim).
