@@ -7,7 +7,7 @@
         module.exports = mod(require('d3'),
                              require('d3.chart'),
                              require('d3.chart.base'),
-                             requure('lodash'));
+                             require('lodash'));
         return;
     }
     // AMD.

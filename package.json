@@ -1,7 +1,7 @@
 {
   "name": "d3.chart.bubble-matrix",
   "description": "A bubble-matrix chart.",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "Benbria",
   "license": {
     "type": "MIT Expat",
@@ -22,7 +22,6 @@
   "d3.chart": {
     "version": "0.1.3"
   },
-  "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.0",
     "grunt-contrib-coffee": "~0.7.0",
@@ -39,7 +38,9 @@
     "karma-firefox-launcher": "0.1.0",
     "karma-mocha": "0.1.0",
     "karma-phantomjs-launcher": "0.1.0",
-    "karma-sinon-chai": "0.1.1"
+    "karma-sinon-chai": "0.1.1",
+    "mocha": "~1.15.1",
+    "bower": "~1.2.8"
   },
   "engines": {
     "node": ">= 0.8",
