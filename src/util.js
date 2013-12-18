@@ -1,8 +1,10 @@
 'use strict';
 
+var util = {};
+
 // Make an function that can be used both as accessor and mutator.
 //
-exports.makeProp = function(name, fn) {
+util.makeProp = function(name, fn) {
     return function(it) {
         if (!it) return this[name];
         this[name] = it;
@@ -14,7 +16,7 @@ exports.makeProp = function(name, fn) {
 // Execute a function `fn` on a ephemeral SVG text containing the specified
 // String `str`.
 //
-exports.onTemporaryText(svgSel, str, fn) {
+util.onTemporaryText = function (svgSel, str, fn) {
     var el = svgSel.append('text').text(str);
     var result = fn(el);
     el.remove();
@@ -23,20 +25,20 @@ exports.onTemporaryText(svgSel, str, fn) {
 
 // Get the length of the String `str` in the SVG selection context `svgSel`.
 //
-exports.lengthOf(svgSel, str) {
-    return onTemporaryText(svgSel, str, function(text) {
+util.lengthOf = function (svgSel, str) {
+    return util.onTemporaryText(svgSel, str, function(text) {
         return text.node().getComputedTextLength();
     });
 }
 
 // Get the extend of a character `chr` in the SVG selection context `svgSel`.
 //
-exports.extentOfChar(svgSel, chr) {
+util.extentOfChar = function (svgSel, chr) {
     if (chr.length < 1)
         throw new Error('char can\'t be empty');
     if (chr.length > 1)
         throw new Error('can get extent of a full string');
-    return onTemporaryText(svgSel, chr, function(text) {
+    return util.onTemporaryText(svgSel, chr, function(text) {
         return text.node().getExtentOfChar(0);
     });
 }
@@ -49,10 +51,11 @@ exports.extentOfChar(svgSel, chr) {
 // TODO @jeanlauliac: extract this as a separate module, as it can be helpful
 // for other charts.
 //
-exports.textRuler = function(svgSel) {
+util.textRuler = function(svgSel) {
     var ruler = ld.memoize(exports.lengthOf.bind(null, svgSel));
     ruler.extendOfChar = ld.memoize(exports.extentOfChar.bind(null, svgSel));
     ruler.onTemporaryText = exports.onTemporaryText.bind(null, svgSel);
     return ruler;
 };
 
+module.exports = util;
