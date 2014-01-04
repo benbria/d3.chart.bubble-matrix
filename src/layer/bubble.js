@@ -60,12 +60,12 @@ var transformRow = function (sel, chart) {
     });
 };
 
-layer.events.enter = function () {
+layer.events['enter'] = function () {
     var chart = this.chart();
     return this.call(transformRow, chart);
 };
 
-layer.events.merge = function () {
+layer.events['merge'] = function () {
     var key = null;
     var chart = this.chart();
     if (chart._bubbleKey) {
@@ -95,7 +95,7 @@ layer.events['update:transition'] = function () {
     return this.call(transformRow, chart);
 };
 
-layer.events.exit = function () {
+layer.events['exit'] = function () {
     return this.remove();
 };
 
