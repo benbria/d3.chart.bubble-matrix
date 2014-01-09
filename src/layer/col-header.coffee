@@ -41,6 +41,7 @@ o.events['update:transition'] = ->
     chart = @chart()
     @duration chart.duration_
     @call transformCol, chart
+    @attr 'opacity', 1
 
 # Just remove exiting columns.
 #

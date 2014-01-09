@@ -43,6 +43,7 @@ o.events['update:transition'] = ->
     chart = @chart()
     @duration chart.duration_
     @call transformRow, chart
+    @attr 'opacity', 1
 
 # Make the exiting header disappear smoothly.
 #
