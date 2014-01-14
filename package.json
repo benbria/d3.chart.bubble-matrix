@@ -46,7 +46,8 @@
     "browserify": "~3.20.0",
     "watchify": "~0.5.0",
     "serve": "~1.3.0",
-    "stylus": "~0.42.0"
+    "stylus": "~0.42.0",
+    "browserify-shim": "~3.1.4"
   },
   "engines": {
     "node": ">= 0.8",
@@ -56,5 +57,16 @@
     "test": "grunt dist",
     "build-js": "browserify src/chart.js -o dist/d3.chart.bubble-matrix.js",
     "example": "mkdir -p example/.build && watchify example/example.js -o example/.build/example.js & serve example"
+  },
+  "browserify": {
+    "transform": [ "browserify-shim" ]
+  },
+  "browser": {
+    "d3.chart": "./vendor/d3.chart.js",
+    "d3.chart.base": "./vendor/d3.chart.base.js"
+  },
+  "browserify-shim": {
+    "d3.chart": { "exports": "d3Chart", "depends": "d3:d3" },
+    "d3.chart.base": { "exports": "d3ChartBase", "depends": "d3:d3" }
   }
 }

@@ -3,6 +3,8 @@
 var util = require('./util');
 var ld = require('lodash');
 var d3 = require('d3');
+var d3Chart = require('d3.chart');
+var d3ChartBase = require('d3.chart.base');
 
 var makeProp = util.makeProp;
 
@@ -41,7 +43,7 @@ var Chart = d3.chart('BaseChart').extend(CHART_NAME, {
         }
     },
 
-    loadDefaults_: function () {
+    _loadDefaults: function () {
         this.rows(function (d) { return d.rows; });
         this.rowHeader(function (d) { return d.name; });
         this.rowData(function (d) { return d.values; });
@@ -55,7 +57,7 @@ var Chart = d3.chart('BaseChart').extend(CHART_NAME, {
     },
 
     transform: function (data) {
-        this._ruler = exports.textRuler(this.base);
+        this._ruler = util.textRuler(this.base);
         var rows = this._rows(data);
         var cols = this._columns(data);
         var left = this._updateLeftMargin(rows, this.width());
