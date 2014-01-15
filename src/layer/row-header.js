@@ -4,7 +4,7 @@ var layer = {events: {}};
 
 layer.dataBind = function (data) {
     var chart = this.chart();
-    return this.selectAll('text').data(data.rows, chart._rowKey);
+    return this.selectAll('text').data(data.rows, chart.rowKey());
 };
 
 layer.insert = function () {
@@ -14,9 +14,9 @@ layer.insert = function () {
 
 function transformRow(sel, chart) {
     var width = chart.width();
-    var left = chart.rowHeaderLeft_;
+    var left = chart.rowHeaderLeft;
     return sel.attr('transform', function (d, i) {
-        return 'translate(' + left + ',' + (chart._yScale(i)) + ')';
+        return 'translate(' + left + ',' + (chart.yScale(i)) + ')';
     });
 }
 

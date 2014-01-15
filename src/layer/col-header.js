@@ -13,11 +13,11 @@ layer.insert = function () {
 };
 
 function transformCol(sel, chart) {
-    var bottom = chart.bottomMargin_;
-    var slanted = chart.slanted_;
+    var bottom = chart.bottomMargin;
+    var slanted = chart.slanted();
     sel.attr('transform', function (d, i) {
         var result;
-        result = 'translate(' + (chart.xScale()(i)) + ',' + bottom + ')';
+        result = 'translate(' + (chart.xScale(i)) + ',' + bottom + ')';
         if (slanted) {
             result += 'rotate(45)';
         }
@@ -31,18 +31,18 @@ layer.events['enter'] = function () {
 
 layer.events['merge'] = function () {
     var chart = this.chart();
-    this.text(chart.colHeader_);
+    this.text(chart.colHeader());
 };
 
 layer.events['enter:transition'] = function () {
     var chart = this.chart();
-    this.duration(chart.duration_);
+    this.duration(chart.duration());
     this.attr('opacity', 1);
 };
 
 layer.events['update:transition'] = function () {
     var chart = this.chart();
-    this.duration(chart.duration_);
+    this.duration(chart.duration());
     this.call(transformCol, chart);
 };
 

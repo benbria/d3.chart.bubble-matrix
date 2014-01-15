@@ -31,10 +31,10 @@ var Chart = d3.chart('BaseChart').extend(CHART_NAME, {
     initialize: function () {
         this._loadDefaults();
         this.base.classed(CHART_ID, true);
-        this._xScale = d3.scale.ordinal();
-        this._yScale = d3.scale.ordinal();
-        this._radiusScale = d3.scale.sqrt();
-        this._leftMargin = 0;
+        this.xScale = d3.scale.ordinal();
+        this.yScale = d3.scale.ordinal();
+        this.radiusScale = d3.scale.sqrt();
+        this.leftMargin = 0;
         var layers = ['thread', 'bubble', 'row-header', 'col-header'];
         for (var i = 0; i < layers.length; ++i) {
             var layer = layers[i];
@@ -64,35 +64,35 @@ var Chart = d3.chart('BaseChart').extend(CHART_NAME, {
         var bottom = this._getMaxBottom(cols, this.height());
         var xDelta = (this.width() - left) / cols.length;
         var yDelta = (bottom - 0) / rows.length;
-        this._xScale.domain(d3.range(0, cols.length));
-        this._yScale.domain(d3.range(0, rows.length));
+        this.xScale.domain(d3.range(0, cols.length));
+        this.yScale.domain(d3.range(0, rows.length));
         var delta = Math.min(xDelta, yDelta);
         var right = left + delta * cols.length;
         bottom = delta * rows.length;
-        this._xScale.rangePoints([left, right], HZ_PADDING);
-        this._yScale.rangePoints([0, bottom], VT_PADDING);
+        this.xScale.rangePoints([left, right], HZ_PADDING);
+        this.yScale.rangePoints([0, bottom], VT_PADDING);
         var padding = this._ruler.extentOfChar('W').height;
-        this._bottomMargin = bottom + padding * 1.3;
-        delta = (this._xScale(1)) - (this._xScale(0));
-        this._maxRadius = delta * (1 - RADIUS_PADDING) / 2;
-        this._radiusScale.range([0, this._maxRadius]);
+        this.bottomMargin = bottom + padding * 1.3;
+        delta = (this.xScale(1)) - (this.xScale(0));
+        this.maxRadius = delta * (1 - RADIUS_PADDING) / 2;
+        this.radiusScale.range([0, this.maxRadius]);
         return {rows: rows, cols: cols};
     },
 
     _updateLeftMargin: function (data, width) {
         var self = this;
-        var leftMargin = this._leftMargin;
+        var leftMargin = this.leftMargin;
         var maxWidth = function (r, d, i) {
             return Math.max(r, self._ruler(self._rowHeader(d, i)));
         };
-        this._rowHeaderLeft = ld.reduce(data, maxWidth, 0);
+        this.rowHeaderLeft = ld.reduce(data, maxWidth, 0);
         var padding = this._ruler.extentOfChar('W').width;
-        this._rowHeaderLeft += padding;
-        this._leftMargin = this._rowHeaderLeft + padding;
-        if (this._leftMargin !== leftMargin) {
-            this.trigger('margin', this._leftMargin);
+        this.rowHeaderLeft += padding;
+        this.leftMargin = this.rowHeaderLeft + padding;
+        if (this.leftMargin !== leftMargin) {
+            this.trigger('margin', this.leftMargin);
         }
-        return this._leftMargin + this._ruler.extentOfChar('W').width;
+        return this.leftMargin + this._ruler.extentOfChar('W').width;
     },
 
     _getMaxBottom: function (data, height) {
