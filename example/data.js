@@ -18,12 +18,21 @@ var HOUR_VOLUMES = [0, -0.1, -0.1, -0.1, -0.1, -0.1, 0.1, 0.2,
                     0.7, 0.8, 0.6, 0.5, 0.9, 0.8, 0.7, 0.5,
                     0.3, 0.4, 0.5, 0.7, 0.9, 0.8, 0.6, 0.3,];
 
+var VARIATION = 0.4;
+var BREAK_COEF = 0.4;
 
 function genRndRow(key) {
     var row = [];
+    var prevPos = 0.5;
+    var halfVar = VARIATION / 2;
     for (var i = 0; i < 24; ++i) {
-        var v = Math.random() * HOUR_VOLUMES[i] * 1.5;
-        var p = Math.random();
+        var v = Math.random() * 0.6 - 0.3 + HOUR_VOLUMES[i];
+        var p = prevPos + Math.random() * VARIATION - halfVar;
+        if (Math.random() < BREAK_COEF) p = 1 - p;
+        if (p > 1) p = 1;
+        if (p < 0) p = 0;
+
+        prevPos = p;
 
         if (v < 0.1) {
             v = 0.1;
