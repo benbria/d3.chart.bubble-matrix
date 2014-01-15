@@ -16,7 +16,7 @@ layer.insert = function () {
 };
 
 function transformThread(sel, chart) {
-    return sel.attr('transform', function (d, i) {
+    sel.attr('transform', function (d, i) {
         return 'translate(0,' + (chart.yScale(i)) + ')';
     });
 }
@@ -32,24 +32,25 @@ layer.events['merge'] = function () {
     var tickHeight = TICK_HEIGHT * chart.maxRadius;
     var path = 'M ' + left + ' -' + (tickHeight / 2) + ' v ' + tickHeight;
     path += ' M ' + left + ' 0 H ' + range[range.length - 1];
-    return this.select('path').attr('d', path);
+    this.select('path').attr('d', path);
 };
 
 layer.events['enter:transition'] = function () {
     this.duration(this.chart().duration());
-    return this.attr('opacity', 1);
+    this.attr('opacity', 1);
 };
 
 layer.events['update:transition'] = function () {
     var chart = this.chart();
     this.duration(chart.duration());
-    return this.call(transformThread, chart);
+    this.call(transformThread, chart);
+    this.attr('opacity', 1);
 };
 
 layer.events['exit:transition'] = function () {
     var chart = this.chart();
     this.duration(chart.duration());
-    return this.attr('opacity', 0).remove();
+    this.attr('opacity', 0).remove();
 };
 
 module.exports = layer;

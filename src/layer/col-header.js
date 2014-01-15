@@ -44,6 +44,7 @@ layer.events['update:transition'] = function () {
     var chart = this.chart();
     this.duration(chart.duration());
     this.call(transformCol, chart);
+    this.attr('opacity', 1);
 };
 
 layer.events['exit'] = function () {
