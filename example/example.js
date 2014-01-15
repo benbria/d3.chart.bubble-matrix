@@ -2,7 +2,7 @@
 
 var _ = require('lodash');
 var d3 = require('d3');
-var chart = require('../src/chart');
+var chart = require('d3.chart.bubble-matrix');
 var colorbrewer = require('./colorbrewer');
 var dataSource = require('./data');
 var utils = require('./utils');
