@@ -6,8 +6,6 @@ A bubble-matrix chart, working on any kind of bidimensional data.
 
 ![bubble matrix](doc/screenshot.png)
 
-Features:
-
   * useful to represent data on two dimensions, each datum being able to
     have two specific traits represented by size and color;
   * based on the powerful [Data-Driven Documents](http://d3js.org/) library;
@@ -18,44 +16,32 @@ Features:
 
 ## Install
 
-With [bower](https://github.com/bower/bower):
+With [npm]:
 
-```sh
-bower install d3.chart.bubble-matrix
-```
+    npm install d3.chart.bubble-matrix
 
-This will install the library, as well as its dependencies. You must include
-those in your HTML: `lodash`, `d3`, `d3.chart`, `d3.chart.base`.
+You can then use [browserify](https://github.com/substack/node-browserify)
+to use the library in your client-side javascript (recommended).
 
-Otherwise, you can directly download the [compiled
-library](https://github.com/benbria/d3.chart.bubble-matrix.shim/archive/master.zip).
+Alternatively you can use `bower` and include explicitely
+those in your HTML: `lodash`, `d3`, `d3.chart`, `d3.chart.base`, or download
+the `dist/d3.chart.bubble-matrix.js`.
 
-The following files are available in the package:
+Additionally you should include the following styles:
 
-  * `d3.chart.bubble-matrix.js` — non-minified, development version;
-  * `d3.chart.bubble-matrix.min.js` — production version;
   * `d3.chart.bubble-matrix.css` — mandatory CSS;
-  * `d3.chart.bubble-matrix.default.css` — theme CSS.
-
-If you want to customize the chart appearance, you can skip the theme CSS
-and style the items yourself.
+  * `d3.chart.bubble-matrix.default.css` — theme CSS, can be replaced by
+    a custom one.
 
 ## Sample Use
 
-We assume `d3`, `lodash`, `d3.chart` and `d3.chart.base` libraries files are in
-the same directory as the example (they'll be located in the
-`bower_components` folder when installed via `bower`).
+    browserify example.js > example.bundle.js
 
 ```html
 <!-- index.html -->
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="d3.js"></script>
-        <script src="lodash.js"></script>
-        <script src="d3.chart.js"></script>
-        <script src="d3.chart.base.js"></script>
-        <script src="d3.chart.bubble-matrix.js"></script>
         <link rel="stylesheet" type="text/css"
               href="d3.chart.bubble-matrix.css">
         <link rel="stylesheet" type="text/css"
@@ -63,24 +49,26 @@ the same directory as the example (they'll be located in the
     </head>
     <body>
         <div id='vis'>
-        <script src="data.js"></script>
-        <script src="example.js"></script>
+        <script src="example.bundle.js"></script>
     </body>
 </html>
 ```
 
 ```js
 /*! example.js */
+var d3 = require('d3');
+var chart = require('d3.chart.bubble-matrix');
+
 var chart = d3.select('#vis').append('svg')
               .chart('BubbleMatrix')
               .width(400).height(200);
 
-chart.draw(exampleData);
+chart.draw(require('./data'));
 ```
 
 ```js
 /*! data.js */
-var exampleData = {
+module.exports = {
     columns: ['the', 'cake', 'is', 'a', 'lie'],
     rows: [
         {name: 'foo', values: [[0.13, 0.69], [0.84, 0.49], [0.31, 0.97],
@@ -92,7 +80,7 @@ var exampleData = {
         {name: 'glo', values: [[0.3, 0.14], [0.39, 0.4], [0.54, 0.23],
                                [0.35, 0.47], [0.71, 0.71]]}
     ]
-}
+};
 ```
 
 This will draw a simple bubble matrix, with the default color palette.
@@ -103,8 +91,9 @@ of assumptions about how is organized your data. However, you can customize a
 lot data organization with the provided interface.
 
 To play with the example in live, clone the repo, grab the packages `npm
-install`, run `grunt dev` and go to [localhost:8000](http://localhost:8000/).
-See also [CONTRIBUTING](CONTRIBUTING.md).
+install`, run `npm run example` and go to
+[localhost:3000](http://localhost:3000/). See also
+[CONTRIBUTING](CONTRIBUTING.md).
 
 ## API
 
