@@ -1,7 +1,7 @@
 {
   "name": "d3.chart.bubble-matrix",
-  "description": "A bubble-matrix chart.",
-  "version": "0.1.6",
+  "description": "A bubble-matrix chart for the Web",
+  "version": "1.0.0-alpha",
   "author": "Benbria",
   "license": {
     "type": "MIT Expat",
