@@ -1,36 +1,36 @@
 'use strict';
 
-var module = d3ChartBubbleMatrix;
+var util = require('../src/util.js');
 
-describe('util', function() {
-    describe('makeProp', function() {
+describe('util', function () {
+    describe('makeProp', function () {
         var obj = {};
 
-        before(function() {
-            obj.test = module.makeProp('test_');
-            obj.testWf = module.makeProp('testWf_', function(it) {
+        before(function () {
+            obj.test = util.makeProp('test_');
+            obj.testWf = util.makeProp('testWf_', function (it) {
                 this.other_ = it + '_yay';
             });
         });
 
-        it('should assign a value', function() {
+        it('should assign a value', function () {
             obj.test(36);
             obj.test_.should.equal(36);
         });
 
-        it('should assign a value and call handler', function() {
+        it('should assign a value and call handler', function () {
             obj.testWf('foobar');
             obj.other_.should.equal('foobar_yay');
         });
 
-        it('should be chainable', function() {
+        it('should be chainable', function () {
             obj.test(42).test(48);
             obj.test_.should.equal(48);
             obj.testWf('foo').testWf('bar');
             obj.testWf_.should.equal('bar');
         });
 
-        it('should get the value', function() {
+        it('should get the value', function () {
             obj.test_ = 48;
             var result = obj.test();
             result.should.equal(48);
@@ -42,7 +42,7 @@ describe('util', function() {
 
         before(function() {
             svg = d3.select('body').append('svg');
-            ruler = module.textRuler(svg);
+            ruler = util.textRuler(svg);
         });
 
         after(function() {
