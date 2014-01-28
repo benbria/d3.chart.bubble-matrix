@@ -7,7 +7,7 @@ var util = {};
 //
 util.makeProp = function (name, fn) {
     return function (it) {
-        if (!it) return this[name];
+        if (typeof it === 'undefined') return this[name];
         this[name] = it;
         if (fn) fn.call(this, it);
         return this;

@@ -2,16 +2,15 @@ module.exports = function (config) {
     config.set({
         basePath: '.',
         reporters: 'progress',
-        frameworks: ['mocha', 'sinon-chai', 'browserify'],
-        preprocessor: {
-            'test/*.spec.js': 'browserify'
-        },
+        frameworks: ['mocha', 'sinon-chai'],
         files: [
-            'd3.chart.<%= meta.chartName %>.{css,default.css}',
-            'test/*.spec.js'
+            '*.css',
+            'test/.build/*.js'
         ],
         port: 9876,
         captureTimeout: 20000,
-        reportSlowerThan: 500
+        reportSlowerThan: 500,
+        browsers: ['Firefox'],
+        singleRun: true
     });
 };

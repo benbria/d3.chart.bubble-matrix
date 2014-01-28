@@ -1,7 +1,7 @@
 'use strict';
 
 var testData = require('./data');
-var chart = require('d3.chart.bubble-matrix');
+var bubbleMatrix = require('d3.chart.bubble-matrix');
 var d3 = require('d3');
 
 var CHART_DURATION = 0;
@@ -23,7 +23,7 @@ function checkHeaders(svg, selector, dataset, headerFn, innerFn) {
 
 function checkBubbles(svg, chart, dataset) {
     var colorScale = chart.colorScale();
-    var radiusScale = chart.radiusScale_;
+    var radiusScale = chart.radiusScale;
     svg.selectAll(Selector.BUBBLE_ROW).each(function (rd, ri) {
         var row = dataset.rows[ri];
         var bubbles = d3.select(this).selectAll(Selector.BUBBLE);
