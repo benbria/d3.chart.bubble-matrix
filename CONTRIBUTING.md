@@ -8,7 +8,7 @@ explaining what change you made & why.
 To get set up:
 
   * `npm install` to install development dependencies.
-  * `npm run build` will build a standalone UMD package in `dist`;
+  * `npm test` to run the karma tests;
   * `npm run example` will run the example on `localhost:3000` and recompile
     files whenever you make a change.
 
