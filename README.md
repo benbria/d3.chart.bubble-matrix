@@ -23,15 +23,16 @@ With [npm]:
 You can then use [browserify](https://github.com/substack/node-browserify)
 to use the library in your client-side javascript (recommended).
 
-Alternatively you can use `bower` and include explicitely
-those in your HTML: `lodash`, `d3`, `d3.chart`, `d3.chart.base`, or download
-the `dist/d3.chart.bubble-matrix.js`.
+If you want to use the library with any other module system, you can generate
+a standalone package with browserify. In the project directory:
 
-Additionally you should include the following styles:
+    browserify src/chart.js --standalone
 
-  * `d3.chart.bubble-matrix.css` — mandatory CSS;
-  * `d3.chart.bubble-matrix.default.css` — theme CSS, can be replaced by
-    a custom one.
+Additionally you should include the styles provided at the npm package
+root:
+
+  * `style.css` — mandatory CSS;
+  * `theme.css` — theme CSS, can be replaced by a custom one.
 
 ## Sample Use
 
