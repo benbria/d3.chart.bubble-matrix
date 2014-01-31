@@ -1,6 +1,6 @@
 'use strict';
 
-window.testData = {
+module.exports = {
     full: {
         columns: ['the', 'cake', 'is', 'a', 'lie'],
         rows: [
@@ -40,4 +40,4 @@ window.testData = {
                                    [0.35, 0.47], [0.71, 0.71]]}
         ]
     }
-}
+};

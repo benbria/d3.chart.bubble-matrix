@@ -1,7 +1,7 @@
 {
   "name": "d3.chart.bubble-matrix",
-  "description": "A bubble-matrix chart.",
-  "version": "0.1.6",
+  "description": "A bubble-matrix chart for the Web",
+  "version": "1.0.0-alpha",
   "author": "Benbria",
   "license": {
     "type": "MIT Expat",
@@ -19,34 +19,56 @@
     "bubbles",
     "matrix"
   ],
+  "main": "src/chart.js",
   "d3.chart": {
     "version": "0.1.3"
   },
+  "dependencies": {
+    "d3": "~3.4.1",
+    "lodash": "~2.4.1"
+  },
   "devDependencies": {
-    "grunt": "~0.4.0",
-    "grunt-contrib-coffee": "~0.7.0",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-connect": "~0.5.0",
-    "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-uglify": "~0.2.4",
-    "grunt-contrib-jshint": "~0.6.4",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-stylus": "~0.9.0",
-    "grunt-karma": "0.6.2",
     "karma": "0.10.4",
     "karma-chrome-launcher": "0.1.0",
     "karma-firefox-launcher": "0.1.0",
     "karma-mocha": "0.1.0",
     "karma-phantomjs-launcher": "0.1.0",
     "karma-sinon-chai": "0.1.1",
-    "mocha": "~1.15.1",
-    "bower": "~1.2.8"
+    "browserify": "~3.20.0",
+    "watchify": "~0.5.0",
+    "serve": "~1.3.0",
+    "stylus": "~0.42.0",
+    "browserify-shim": "~3.1.4",
+    "mocha": "~1.15.1"
   },
   "engines": {
     "node": ">= 0.8",
     "npm": ">= 1.3"
   },
   "scripts": {
-    "test": "grunt dist"
+    "test": "npm run build-test && npm run build-css && karma start karma.conf.js",
+    "build-test": "mkdir -p test/.build && browserify -d test/*.spec.js > test/.build/tests.js",
+    "build-css": "stylus src -o .",
+    "example": "bin/example.sh"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browser": {
+    "d3.chart": "./vendor/d3.chart.js",
+    "d3.chart.base": "./vendor/d3.chart.base.js",
+    "d3.chart.bubble-matrix": "./src/chart.js"
+  },
+  "browserify-shim": {
+    "d3.chart": {
+      "exports": "d3Chart",
+      "depends": "d3:d3"
+    },
+    "d3.chart.base": {
+      "exports": "d3ChartBase",
+      "depends": "d3:d3"
+    }
   }
 }

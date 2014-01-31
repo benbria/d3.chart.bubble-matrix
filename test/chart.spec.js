@@ -1,5 +1,9 @@
 'use strict';
 
+var testData = require('./data');
+var bubbleMatrix = require('d3.chart.bubble-matrix');
+var d3 = require('d3');
+
 var CHART_DURATION = 0;
 var DRAW_DELAY = 100;
 
@@ -11,7 +15,7 @@ var Selector = {
 };
 
 function checkHeaders(svg, selector, dataset, headerFn, innerFn) {
-    svg.selectAll(selector).each(function(d, i) {
+    svg.selectAll(selector).each(function (d, i) {
         var s = d3.select(this);
         s.text().should.equal(innerFn(headerFn(dataset)[i]));
     });
@@ -19,11 +23,11 @@ function checkHeaders(svg, selector, dataset, headerFn, innerFn) {
 
 function checkBubbles(svg, chart, dataset) {
     var colorScale = chart.colorScale();
-    var radiusScale = chart.radiusScale_;
-    svg.selectAll(Selector.BUBBLE_ROW).each(function(rd, ri) {
+    var radiusScale = chart.radiusScale;
+    svg.selectAll(Selector.BUBBLE_ROW).each(function (rd, ri) {
         var row = dataset.rows[ri];
         var bubbles = d3.select(this).selectAll(Selector.BUBBLE);
-        bubbles.each(function(bd, bi) {
+        bubbles.each(function (bd, bi) {
             var bubble = d3.select(this);
             (+bubble.attr('r')).should.be.
                 closeTo(radiusScale(row.values[bi][0]), 0.01);
@@ -37,7 +41,7 @@ function getColumns(dataset) { return dataset.columns; }
 function getName(datum) { return datum.name; }
 function identity(datum) { return datum; }
 
-describe('chart', function() {
+describe('chart', function () {
     var svg, chart;
 
     function init() {
@@ -53,69 +57,69 @@ describe('chart', function() {
     //
     // TODO(jeanlauliac): report this issue on Karma tracker?
     //
-    before(function(cb) {
-        setTimeout(function() {
+    before(function (cb) {
+        setTimeout(function () {
             if (document.readyState === 'complete') {
                 init();
                 cb();
             }
-            window.addEventListener('load', function() {
+            window.addEventListener('load', function () {
                 init();
                 cb();
             }, false);
         }, 500);
     });
 
-    after(function() {
+    after(function () {
         svg.remove();
     });
 
-    describe('full data', function() {
-        before(function(cb) {
-            chart.draw(window.testData.full);
+    describe('full data', function () {
+        before(function (cb) {
+            chart.draw(testData.full);
             setTimeout(cb, DRAW_DELAY);
         });
 
-        it('should display proper rows', function() {
+        it('should display proper rows', function () {
             checkHeaders(svg, Selector.ROW_HEADER_TEXT,
-                         window.testData.full,
+                         testData.full,
                          getRows, getName);
         });
 
-        it('should display proper columns', function() {
+        it('should display proper columns', function () {
             checkHeaders(svg, Selector.COL_HEADER_TEXT,
-                         window.testData.full,
+                         testData.full,
                          getColumns, identity);
         });
 
-        it('should display proper bubbles', function() {
-            checkBubbles(svg, chart, window.testData.full);
+        it('should display proper bubbles', function () {
+            checkBubbles(svg, chart, testData.full);
         });
     });
 
-    describe('three-rows data', function() {
-        before(function(cb) {
-            chart.draw(window.testData.threeRows);
+    describe('three-rows data', function () {
+        before(function (cb) {
+            chart.draw(testData.threeRows);
             setTimeout(cb, DRAW_DELAY);
         });
 
         // TODO(jeanlauliac): test that the row and column keys are tracked.
-        it('should update rows', function() {
+        it('should update rows', function () {
             checkHeaders(svg, Selector.ROW_HEADER_TEXT,
-                         window.testData.threeRows,
+                         testData.threeRows,
                          getRows, getName);
         });
     });
 
-    describe('four-cols data', function() {
-        before(function(cb) {
-            chart.draw(window.testData.fourCols);
+    describe('four-cols data', function () {
+        before(function (cb) {
+            chart.draw(testData.fourCols);
             setTimeout(cb, DRAW_DELAY);
         });
 
-        it('should update columns', function() {
+        it('should update columns', function () {
             checkHeaders(svg, Selector.COL_HEADER_TEXT,
-                         window.testData.fourCols,
+                         testData.fourCols,
                          getColumns, identity);
         });
     });

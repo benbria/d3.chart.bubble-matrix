@@ -6,8 +6,6 @@ A bubble-matrix chart, working on any kind of bidimensional data.
 
 ![bubble matrix](doc/screenshot.png)
 
-Features:
-
   * useful to represent data on two dimensions, each datum being able to
     have two specific traits represented by size and color;
   * based on the powerful [Data-Driven Documents](http://d3js.org/) library;
@@ -18,44 +16,33 @@ Features:
 
 ## Install
 
-With [bower](https://github.com/bower/bower):
+With [npm]:
 
-```sh
-bower install d3.chart.bubble-matrix
-```
+    npm install d3.chart.bubble-matrix
 
-This will install the library, as well as its dependencies. You must include
-those in your HTML: `lodash`, `d3`, `d3.chart`, `d3.chart.base`.
+You can then use [browserify](https://github.com/substack/node-browserify)
+to use the library in your client-side javascript (recommended).
 
-Otherwise, you can directly download the [compiled
-library](https://github.com/benbria/d3.chart.bubble-matrix.shim/archive/master.zip).
+If you want to use the library with any other module system, you can generate
+a standalone package with browserify. In the project directory:
 
-The following files are available in the package:
+    browserify src/chart.js --standalone
 
-  * `d3.chart.bubble-matrix.js` — non-minified, development version;
-  * `d3.chart.bubble-matrix.min.js` — production version;
-  * `d3.chart.bubble-matrix.css` — mandatory CSS;
-  * `d3.chart.bubble-matrix.default.css` — theme CSS.
+Additionally you should include the styles provided at the npm package
+root:
 
-If you want to customize the chart appearance, you can skip the theme CSS
-and style the items yourself.
+  * `style.css` — mandatory CSS;
+  * `theme.css` — theme CSS, can be replaced by a custom one.
 
 ## Sample Use
 
-We assume `d3`, `lodash`, `d3.chart` and `d3.chart.base` libraries files are in
-the same directory as the example (they'll be located in the
-`bower_components` folder when installed via `bower`).
+    browserify example.js > example.bundle.js
 
 ```html
 <!-- index.html -->
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="d3.js"></script>
-        <script src="lodash.js"></script>
-        <script src="d3.chart.js"></script>
-        <script src="d3.chart.base.js"></script>
-        <script src="d3.chart.bubble-matrix.js"></script>
         <link rel="stylesheet" type="text/css"
               href="d3.chart.bubble-matrix.css">
         <link rel="stylesheet" type="text/css"
@@ -63,24 +50,26 @@ the same directory as the example (they'll be located in the
     </head>
     <body>
         <div id='vis'>
-        <script src="data.js"></script>
-        <script src="example.js"></script>
+        <script src="example.bundle.js"></script>
     </body>
 </html>
 ```
 
 ```js
 /*! example.js */
+var d3 = require('d3');
+var chart = require('d3.chart.bubble-matrix');
+
 var chart = d3.select('#vis').append('svg')
               .chart('BubbleMatrix')
               .width(400).height(200);
 
-chart.draw(exampleData);
+chart.draw(require('./data'));
 ```
 
 ```js
 /*! data.js */
-var exampleData = {
+module.exports = {
     columns: ['the', 'cake', 'is', 'a', 'lie'],
     rows: [
         {name: 'foo', values: [[0.13, 0.69], [0.84, 0.49], [0.31, 0.97],
@@ -92,7 +81,7 @@ var exampleData = {
         {name: 'glo', values: [[0.3, 0.14], [0.39, 0.4], [0.54, 0.23],
                                [0.35, 0.47], [0.71, 0.71]]}
     ]
-}
+};
 ```
 
 This will draw a simple bubble matrix, with the default color palette.
@@ -103,63 +92,62 @@ of assumptions about how is organized your data. However, you can customize a
 lot data organization with the provided interface.
 
 To play with the example in live, clone the repo, grab the packages `npm
-install`, run `grunt dev` and go to [localhost:8000](http://localhost:8000/).
-See also [CONTRIBUTING](CONTRIBUTING.md).
+install`, run `npm run example` and go to
+[localhost:3000](http://localhost:3000/). See also
+[CONTRIBUTING](CONTRIBUTING.md).
 
 ## API
 
 ### Methods
 
-##### `<instance>.draw(data)`
+#### chart.draw(data)
 
-Draw the chart with the specified data.
+  * `data` *Object* Data to represent.
+
+Draw the chart.
 
 ### Properties
 
-Each configuration function returns the current value or the property when
-called with no argument, set the value otherwise.
+Each configuration function returns the current value of the property when
+called with no argument, and sets the value otherwise.
 
-##### `<instance>.rows([fn])`
+#### chart.rows([fn])
 
-The function `fn` is called with `(data)` and must return an `Array` of
-rows. By default this is set to `function(d) { return d.rows; }`. This is a
-required property.
+  * `fn(data)` *Function* Called with the data, must return an *Array* of
+    rows.
 
----
+Required. Default: `function(d) { return d.rows; }`.
 
-##### `<instance>.rowHeader([fn])`
+#### chart.rowHeader([fn])
 
-The function `fn` is called `(datum)` for each row and must return a `String`
-to be displayed as the row header. By default this is set to `function(d)
-{ return d.name; }`. This is a required property.
+  * `fm(datum)` *Function* Called for each row, must return a *String*
+    to be displayed as the row header.
 
----
+Required. Default: `function(d) { return d.name; }`.
 
-##### `<instance>.rowKey([fn])`
+#### chart.rowKey([fn])
 
-The function `fn` is called `(datum)` for each row and must return a `String`
-that identifies uniquely the row. When rows are updated by subsequent calls to
-`draw`, rows will be removed, added; or updated/moved when a key match an
-existing row. This is an optional property and is `null` by default.
+  * `fn(datum)` *Function* Called for each row, must return a *String*
+    that identifies uniquely the row.
 
----
+When rows are updated by subsequent calls to `draw`, rows will be removed,
+added; or updated/moved when a key match an existing row. Optional.
 
-##### `<instance>.rowData([fn])`
+#### chart.rowData([fn])
 
-The function `fn` is called `(datum)` for each row and must return an `Object`
-containing bubble data for this row. This is a required property.
+  * `fn(datum)` *Function* Called for each row, must return an `Object`
+    containing bubble data for this row.
 
----
+Required.
 
-##### `<instance>.columns([fn])`
+#### chart.columns([fn])
 
-The function `fn` is called with `(data)` and must return an `Array` containing
-each column data. By default this is set to `function(d) { return d.columns;
-}`. This is a required property.
+  * `fn(data)` *Function* Called with the data, must return an `Array`
+    containing each column datum.
 
-Note you don't specifically have to store the column data array into the data
-provided to `draw`. You can build directly the column data in this function if
-you wish. For instance, in `example/example.js`, we build column information
+Note you don't specifically have to store the column array into the data
+provided to `draw`. You can build on-the-fly the column data in this function
+if you wish. For instance, in `example/example.js`, we build column information
 from a range stored in the data:
 
 ```js
@@ -169,89 +157,86 @@ chart.columns(function (d) { return d3.range(d.dayHours[0],
      .colHeader(utils.hourName)
 ```
 
----
+Required. Default: `function(d) { return d.columns;}`.
 
-##### `<instance>.colHeader([fn])`
+#### chart.colHeader([fn])
 
-The function `fn` is called `(datum)` for each column and must return a
-`String` to be displayed as the column header. By default this is set to
-`function(d) { return d; }`. This is a required property.
+  * `fn(datum)` *Function* Called for each column, must return a
+    *String* to be displayed as the column header.
 
----
+Required. Default: `function(d) { return d; }`.
 
-##### `<instance>.colKey([fn])`
+#### chart.colKey([fn])
 
-The function `fn` is called `(datum)` for each column and must return a
-`String` that identifies uniquely the column. When columns and bubbles are
-updated by subsequent calls to `draw`, columns will be removed, added; or
-updated/moved when a key match an existing column. This is an optional property
-and is `null` by default.
+  * `fn(datum)` *Function* Called for each column, must return a
+    *String* that identifies uniquely the column.
 
----
+When columns and bubbles are updated by subsequent calls to `draw`, columns
+will be removed, added; or updated/moved when a key match an existing column.
+Optional.
 
-##### `<instance>.size([fn])`
+#### chart.size([fn])
 
-The function `fn` is called `(datum)` for each bubble and must return a
-`Number` driving the bubble sizes. By default this is set to `function(d) {
-return d[0]; }`. This is a required property.
+  * `fn(datum)` *Function* Called for each bubble, must return a
+    *Number* driving the bubble sizes.
 
----
+Required. Default: `function(d) { return d[0]; }`.
 
-##### `<instance>.color([fn])`
+#### chart.color([fn])
 
-The function `fn` is called `(datum)` for each bubble and must return a
-`Number` driving the bubble color. By default this is set to `function(d) {
-return d[1]; }`. This is a required property.
+  * `fn(datum)` *Function* Called for each bubble, must return a
+    *Number* driving the bubble color.
 
 Note, if you want, you can return a fixed value and only use the size
 feature of the bubbles; or, you can return a value correlated with the
 size.
 
----
+Required. Default: `function(d) { return d[1]; }`.
 
-##### `<instance>.sizeDomain([value])`
+#### chart.sizeDomain([value])
 
-Set the domain of the values returned by `size` to be `value`. `value` must
-be an `Array` containing the min and max of acceptable values. By default this
-is set to `[0, 1]`. This is a required property.
+  * `value` *Array* Domain of the values returned by `size`. Must contain the
+    min and max of acceptable values.
 
 The actual radius of the bubbles is the square root of the size obtained after
-normalization. This ensures one bubble *area* to represent accurately the size.
+normalization. This ensures that bubble *areas* represent accurately the size
+(and not the radius/width). 
 
----
+Required. Default: `[0, 1]`.
 
-##### `<instance>.colorScale([fn])`
+#### chart.colorScale([fn])
 
-Set the color scale used to translate color values to actual colors. A scale
-is just a function called with `(value)` and that must return a color. You may
-want to create the scale with d3.js, eg:
+  * `fn(value)` *Function* Color scale used to translate color values to actual
+    colors. Must return a color.
+
+You may want to create the scale with d3.js, eg.
 
 ```js
-var palette = ['#ff0000', '#00ff00', '#0000ff']
+var palette = ['#ff0000', '#00ff00', '#0000ff'];
 
 chart.colorScale(d3.scale.quantize().domain([0,1])
-                   .range(palette);
+                   .range(palette));
 ```
 
-A default color scale from red to blue is provided. This is a required
-property.
+Required. A default color scale from red to blue is provided.
 
 ### Events
 
-##### `margin(value)`
+Listen to events with the method `on` of d3.chart.
 
-Sent when the left margin width changes with:
+#### margin(value)
 
-  * `value` {Number} the margin width;
+  * `value` *Number* the margin width.
   * `this` the chart itself.
 
-It is useful to align the SVG element on your paragraphs. Example:
+Sent when the left margin width changes. It is useful to align the SVG
+element on your paragraphs. Example:
 
 ```js
 var chart = d3.select('#vis').append('svg')
               .chart('BubbleMatrix');
 
-chart.on('margin', function(value) {
+chart.on('margin', function (value) {
     this.base.style('margin-left', '-' + value + 'px');
 });
 ```
@@ -262,11 +247,10 @@ The value `base` in the chart is the root d3 selection, generally the SVG.
 
   * Tested on Chrome 30, Firefox 22 and IE10;
   * does not resize the headers font, if the chart is dynamically resized to be
-    tiny, it won't be very good (but you can change the font with CSS);
-  * does not support — yet — slanted headers;
-  * animations can become slow if you have a lot of bubbles displayed;
-  * Async. Module Definition is implemented but have not been tested —
-    properly supporting and testing it is in the roadmap.
+    tiny, it may not be very good-looking (but you can change the font with CSS
+    or via d3.chart layer events);
+  * does not support — yet — slanted headers to accomodate long texts;
+  * animations might become slow if you have a lot of bubbles displayed.
 
-Please, feel free to open pull requests to make any change.
+Please feel free to open pull requests to make any change.
 See [CONTRIBUTING](CONTRIBUTING.md).

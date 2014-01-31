@@ -1,4 +1,4 @@
-var exampleData = {
+module.exports = {
     columns: ['the', 'cake', 'is', 'a', 'lie'],
     rows: [
         {name: 'foo', values: [[0.13, 0.69], [0.84, 0.49], [0.31, 0.97],
@@ -10,4 +10,4 @@ var exampleData = {
         {name: 'glo', values: [[0.3, 0.14], [0.39, 0.4], [0.54, 0.23],
                                [0.35, 0.47], [0.71, 0.71]]}
     ]
-}
+};
