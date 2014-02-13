@@ -1,4 +1,7 @@
 /node_modules
 /bower_components
-/dist
-/.build
+/bundle.js
+/style.css
+/theme.css
+.build/
+npm-debug.log
