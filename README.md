@@ -4,7 +4,7 @@ A bubble-matrix chart, working on any kind of bidimensional data.
 
 [![Build Status](https://travis-ci.org/benbria/d3.chart.bubble-matrix.png?branch=master)](https://travis-ci.org/benbria/d3.chart.bubble-matrix)
 
-![bubble matrix](doc/screenshot.png)
+![bubble matrix](https://raw.githubusercontent.com/benbria/d3.chart.bubble-matrix/master/doc/screenshot.png)
 
   * useful to represent data on two dimensions, each datum being able to
     have two specific traits represented by size and color;
