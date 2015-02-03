@@ -26,7 +26,9 @@ to use the library in your client-side javascript (recommended).
 If you want to use the library with any other module system, you can generate
 a standalone package with browserify. In the project directory:
 
-    browserify src/chart.js --standalone Chart > build/d3.chart.bubble-matrix.js
+    npm run build
+
+This will generate the required files in the build directory.
 
 Additionally you should include the styles provided at the npm package
 root:

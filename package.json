@@ -56,6 +56,7 @@
     "test": "npm run build-test && npm run build-css && karma start karma.conf.js",
     "build-test": "mkdir -p test/.build && browserify -d test/*.spec.js > test/.build/tests.js",
     "build-css": "stylus src -o .",
+    "build": "stylus src -o ./build/css ; browserify src/chart.js --standalone Chart > ./build/js/d3.chart.bubble-matrix.js",
     "example": "bin/example.sh"
   },
   "browserify": {
