@@ -5,3 +5,4 @@
 /theme.css
 .build/
 npm-debug.log
+build/
