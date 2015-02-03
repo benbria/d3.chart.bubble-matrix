@@ -43,6 +43,10 @@ var Chart = d3.chart('BaseChart').extend(CHART_NAME, {
         }
     },
 
+    modes: {
+      default: function() { return true; }
+    },
+
     _loadDefaults: function () {
         this.rows(function (d) { return d.rows; });
         this.rowHeader(function (d) { return d.name; });

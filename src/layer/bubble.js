@@ -1,7 +1,7 @@
 'use strict';
 
 var STROKE_WIDTH = 0.15;
-var layer = {events: {}};
+var layer = {events: {}, modes: ['default']};
 
 layer.dataBind = function (data) {
     var chart = this.chart();

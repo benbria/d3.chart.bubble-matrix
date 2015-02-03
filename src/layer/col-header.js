@@ -1,6 +1,6 @@
 'use strict';
 
-var layer = {events: {}};
+var layer = {events: {}, modes: ['default']};
 
 layer.dataBind = function (data) {
     var chart = this.chart();
