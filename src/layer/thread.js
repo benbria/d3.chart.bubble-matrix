@@ -1,7 +1,7 @@
 'use strict';
 
 var TICK_HEIGHT = 1;
-var layer = {events: {}, modes: ['default']};
+var layer = {events: {}, modes: ['mobile', 'tablet', 'web']};
 
 layer.dataBind = function (data) {
     var chart = this.chart();

@@ -10,7 +10,7 @@ var makeProp = util.makeProp;
 
 var CHART_NAME = 'BubbleMatrix';
 var CHART_ID = 'd3-chart-bubble-matrix';
-var HZ_PADDING = 1.0;
+var HZ_PADDING = 1.3;
 var VT_PADDING = 1.0;
 var RADIUS_PADDING = 0.1;
 var DEFAULT_PALETTE = ['#b2182b', '#d6604d', '#f4a582', '#fddbc7', '#f7f7f7',
@@ -44,7 +44,15 @@ var Chart = d3.chart('BaseChart').extend(CHART_NAME, {
     },
 
     modes: {
-      default: function() { return true; }
+      mobile : function() {
+        return $(document).width() < 480;
+      },
+      tablet: function() {
+        return $(document).width() >= 481 && $(document).width() <= 768;
+      },
+      web: function() {
+        return $(document).width() >= 769;
+      }
     },
 
     _loadDefaults: function () {
@@ -71,8 +79,8 @@ var Chart = d3.chart('BaseChart').extend(CHART_NAME, {
         this.xScale.domain(d3.range(0, cols.length));
         this.yScale.domain(d3.range(0, rows.length));
         var delta = Math.min(xDelta, yDelta);
-        var right = left + delta * cols.length;
-        bottom = delta * rows.length;
+        var right = left + xDelta * cols.length;
+        bottom = yDelta * rows.length;
         this.xScale.rangePoints([left, right], HZ_PADDING);
         this.yScale.rangePoints([0, bottom], VT_PADDING);
         var padding = this._ruler.extentOfChar('W').height;

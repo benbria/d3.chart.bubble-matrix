@@ -1,6 +1,6 @@
 'use strict';
 
-var layer = {events: {}, modes: ['default']};
+var layer = {events: {}, modes: ['mobile', 'tablet', 'web']};
 
 layer.dataBind = function (data) {
     var chart = this.chart();
@@ -14,12 +14,12 @@ layer.insert = function () {
 
 function transformCol(sel, chart) {
     var bottom = chart.bottomMargin;
-    var slanted = chart.slanted();
+    var slanted = chart.slanted() || chart.mode() != 'web';
     sel.attr('transform', function (d, i) {
         var result;
         result = 'translate(' + (chart.xScale(i)) + ',' + bottom + ')';
         if (slanted) {
-            result += 'rotate(45)';
+            result += 'rotate(65)';
         }
         return result;
     });
